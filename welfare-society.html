@@ -6,7 +6,10 @@
 <title>Welfare Society — Food Pack System</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
-
+<!-- ============================================================
+  FIREBASE SETUP — PASTE YOUR CONFIG HERE
+  Full setup guide is at the bottom of this file (in the comments)
+  ============================================================ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
@@ -14,7 +17,7 @@
   import { getDatabase, ref, onValue, push, set, update, remove }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ▼▼▼ STEP 1: PASTE YOUR FIREBASE CONFIG HERE ▼▼▼
+  // ▼▼▼ PASTE YOUR SAME FIREBASE CONFIG HERE ▼▼▼
   const firebaseConfig = {
     apiKey:            "AIzaSyDgj2a6MK9iEXlJ7hvJYNVxrOTneQjkmHM",
     authDomain:        "welfare-society-f517a.firebaseapp.com",
@@ -351,7 +354,7 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
             <table class="data-table">
               <thead><tr>
                 <th>Card No</th><th>Name</th><th>Father Name</th><th>Village</th>
-                <th>Contact</th><th>Category</th><th>Date</th><th>Status</th>
+                <th>Caste</th><th>Contact</th><th>Category</th><th>Date</th><th>Status</th>
                 <th class="no-print">Actions</th>
               </tr></thead>
               <tbody id="table-body"></tbody>
@@ -405,7 +408,8 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
       <div class="fg full"><label>Father Name</label><input id="f-father" placeholder="Ahmad Khan"></div>
       <div class="fg"><label>Contact Number</label><input id="f-contact" placeholder="0300-1234567"></div>
       <div class="fg"><label>Category</label><select id="f-category"><option>Zakat</option><option>Sadaqa</option></select></div>
-      <div class="fg full"><label>Distribution Date</label><input id="f-date" placeholder="15 April 2025"></div>
+      <div class="fg"><label>Caste</label><input id="f-caste" placeholder="e.g. Arain"></div>
+      <div class="fg"><label>Distribution Date</label><input id="f-date" placeholder="15 April 2025"></div>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -561,7 +565,7 @@ function renderTable() {
     if(fv&&d.village!==fv) return false;
     if(fc&&d.category!==fc) return false;
     if(fs&&d.status!==fs) return false;
-    if(q&&!`${d.name} ${d.father} ${d.cardNo} ${d.village} ${d.contact}`.toLowerCase().includes(q)) return false;
+    if(q&&!`${d.name} ${d.father} ${d.cardNo} ${d.village} ${d.contact} ${d.caste||''}`.toLowerCase().includes(q)) return false;
     return true;
   });
   const tb=document.getElementById('table-body'), em=document.getElementById('table-empty');
@@ -572,6 +576,7 @@ function renderTable() {
     <td style="font-weight:500">${d.name||''}</td>
     <td style="color:var(--text-muted)">${d.father||''}</td>
     <td>${d.village||''}</td>
+    <td style="color:var(--text-muted)">${d.caste||'—'}</td>
     <td style="color:var(--text-muted)">${d.contact||''}</td>
     <td><span class="badge ${d.category==='Zakat'?'bz':'bs'}">${d.category||''}</span></td>
     <td style="color:var(--text-muted)">${d.date||''}</td>
@@ -601,6 +606,7 @@ function renderCards() {
         <div class="bcard-row"><span class="l">Village</span><span class="v">${d.village||''}</span></div>
         <div class="bcard-row"><span class="l">Contact</span><span class="v">${d.contact||''}</span></div>
         <div class="bcard-row"><span class="l">Category</span><span class="v">${d.category||''}</span></div>
+        <div class="bcard-row"><span class="l">Caste</span><span class="v">${d.caste||'—'}</span></div>
         <div class="bcard-row"><span class="l">Date</span><span class="v">${d.date||''}</span></div>
       </div>
       <div class="bcard-foot"><span class="bcard-no">${d.cardNo||''}</span><span class="badge ${d.status==='Collected'?'bc':'bp'}" style="font-size:10px">${d.status||'Pending'}</span></div>
@@ -644,7 +650,7 @@ function removeVillage(name) {
 function openAdd() {
   editId=null;
   document.getElementById('modal-heading').textContent='Add Beneficiary';
-  ['f-name','f-father','f-contact','f-date'].forEach(id=>document.getElementById(id).value='');
+  ['f-name','f-father','f-contact','f-caste','f-date'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-category').value='Zakat';
   if(document.getElementById('f-village').options.length) document.getElementById('f-village').selectedIndex=0;
   const nums=rows().map(d=>parseInt((d.cardNo||'').replace(/\D/g,''))).filter(n=>!isNaN(n));
@@ -663,6 +669,7 @@ function openEdit(id) {
   document.getElementById('f-village').value=d.village||'';
   document.getElementById('f-contact').value=d.contact||'';
   document.getElementById('f-category').value=d.category||'Zakat';
+  document.getElementById('f-caste').value=d.caste||'';
   document.getElementById('f-date').value=d.date||'';
   document.getElementById('modal').classList.add('open');
 }
@@ -678,6 +685,7 @@ function saveRecord() {
     village:document.getElementById('f-village').value,
     contact:document.getElementById('f-contact').value.trim(),
     category:document.getElementById('f-category').value,
+    caste:document.getElementById('f-caste').value.trim(),
     date:document.getElementById('f-date').value.trim(),
   };
   const btn=document.getElementById('save-btn');
@@ -709,8 +717,8 @@ function toggleStatus(id,current) {
 
 function exportCSV() {
   const arr=rows(); if(!arr.length){toast('No data','err');return;}
-  const h=['Card No','Name','Father Name','Village','Contact','Category','Date','Status'];
-  const r=arr.map(d=>[d.cardNo,d.name,d.father,d.village,d.contact,d.category,d.date,d.status]);
+  const h=['Card No','Name','Father Name','Caste','Village','Contact','Category','Date','Status'];
+  const r=arr.map(d=>[d.cardNo,d.name,d.father,d.caste||'',d.village,d.contact,d.category,d.date,d.status]);
   const csv=[h,...r].map(row=>row.map(c=>`"${(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
