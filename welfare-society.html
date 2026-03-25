@@ -151,8 +151,6 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
 .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
 .bz{background:var(--green-light);color:var(--green-dark)}
 .bs{background:var(--blue-light);color:var(--blue)}
-.bc{background:#eaf3de;color:#3b6d11}
-.bp{background:var(--amber-light);color:var(--amber)}
 
 /* VILLAGE TABLE */
 .vtable{width:100%;border-collapse:collapse}
@@ -160,8 +158,6 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
 .vtable td{padding:12px 16px;border-bottom:1px solid #f0f5f2;font-size:13px}
 .vtable tbody tr:last-child td{border-bottom:none}
 .vtable tbody tr:hover td{background:#f8fbf9}
-.pbar{height:5px;border-radius:3px;background:#e8f5ee;overflow:hidden;min-width:60px}
-.pbar-fill{height:100%;background:var(--green);border-radius:3px}
 
 /* PRINT CARDS */
 .print-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;page-break-after:always}
@@ -327,7 +323,7 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
           <div class="card-header"><h3>Village-wise Summary</h3></div>
           <div style="overflow-x:auto">
             <table class="vtable">
-              <thead><tr><th>Village</th><th>Total</th><th>Zakat</th><th>Sadaqa</th><th>Collected</th><th>Pending</th><th>Progress</th></tr></thead>
+              <thead><tr><th>Village</th><th>Total</th><th>Zakat</th><th>Sadaqa</th></tr></thead>
               <tbody id="village-tbody"></tbody>
             </table>
           </div>
@@ -346,15 +342,13 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
             <select id="filter-category" onchange="renderTable()">
               <option value="">All Categories</option><option>Zakat</option><option>Sadaqa</option>
             </select>
-            <select id="filter-status" onchange="renderTable()">
-              <option value="">All Status</option><option>Pending</option><option>Collected</option>
-            </select>
+            <select id="filter-status" style="display:none"></select>
           </div>
           <div style="overflow-x:auto">
             <table class="data-table">
               <thead><tr>
                 <th>Card No</th><th>Name</th><th>Father Name</th><th>Village</th>
-                <th>Caste</th><th>Contact</th><th>Category</th><th>Date</th><th>Status</th>
+                <th>Caste</th><th>Contact</th><th>Category</th><th>Date</th>
                 <th class="no-print">Actions</th>
               </tr></thead>
               <tbody id="table-body"></tbody>
@@ -539,19 +533,18 @@ function switchTab(tab) {
 
 // DASHBOARD
 function renderDashboard() {
-  const arr=rows(), total=arr.length, coll=arr.filter(d=>d.status==='Collected').length;
+  const arr=rows(), total=arr.length;
   const zakat=arr.filter(d=>d.category==='Zakat').length, vc=allVils().length;
   document.getElementById('stats-grid').innerHTML=`
     <div class="stat-card sg"><div class="lbl">Total Beneficiaries</div><div class="val">${total}</div><div class="sub">Across ${vc} villages</div></div>
-    <div class="stat-card sp"><div class="lbl">Collected</div><div class="val" style="color:#3b6d11">${coll}</div><div class="sub">${total?Math.round(coll/total*100):0}% done</div></div>
-    <div class="stat-card sa"><div class="lbl">Pending</div><div class="val" style="color:var(--amber)">${total-coll}</div><div class="sub">Yet to collect</div></div>
-    <div class="stat-card sb"><div class="lbl">Zakat / Sadaqa</div><div class="val" style="font-size:20px">${zakat} / ${total-zakat}</div><div class="sub">Category split</div></div>`;
+    <div class="stat-card sb"><div class="lbl">Zakat</div><div class="val" style="color:var(--green-dark)">${zakat}</div><div class="sub">${total?Math.round(zakat/total*100):0}% of total</div></div>
+    <div class="stat-card sa"><div class="lbl">Sadaqa</div><div class="val" style="color:var(--amber)">${total-zakat}</div><div class="sub">${total?Math.round((total-zakat)/total*100):0}% of total</div></div>
+    <div class="stat-card sp"><div class="lbl">Villages</div><div class="val">${vc}</div><div class="sub">Registered villages</div></div>`;
 
   document.getElementById('village-tbody').innerHTML = allVils().map(v => {
     const vd=arr.filter(d=>d.village===v); if(!vd.length) return '';
-    const vc2=vd.filter(d=>d.status==='Collected').length, pct=Math.round(vc2/vd.length*100);
-    return `<tr><td><strong>${v}</strong></td><td>${vd.length}</td><td>${vd.filter(d=>d.category==='Zakat').length}</td><td>${vd.filter(d=>d.category==='Sadaqa').length}</td><td style="color:#3b6d11;font-weight:600">${vc2}</td><td style="color:var(--amber);font-weight:600">${vd.length-vc2}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="pbar" style="flex:1"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:11px;color:var(--text-muted);min-width:28px">${pct}%</span></div></td></tr>`;
-  }).join('')||`<tr><td colspan="7" style="padding:24px;text-align:center;color:var(--text-muted)">No data yet.</td></tr>`;
+    return `<tr><td><strong>${v}</strong></td><td>${vd.length}</td><td>${vd.filter(d=>d.category==='Zakat').length}</td><td>${vd.filter(d=>d.category==='Sadaqa').length}</td></tr>`;
+  }).join('')||`<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-muted)">No data yet.</td></tr>`;
 }
 
 // TABLE
@@ -560,11 +553,9 @@ function renderTable() {
   const q=(document.getElementById('search-input')?.value||'').toLowerCase();
   const fv=document.getElementById('filter-village')?.value||'';
   const fc=document.getElementById('filter-category')?.value||'';
-  const fs=document.getElementById('filter-status')?.value||'';
   const filtered=rows().filter(d=>{
     if(fv&&d.village!==fv) return false;
     if(fc&&d.category!==fc) return false;
-    if(fs&&d.status!==fs) return false;
     if(q&&!`${d.name} ${d.father} ${d.cardNo} ${d.village} ${d.contact} ${d.caste||''}`.toLowerCase().includes(q)) return false;
     return true;
   });
@@ -580,10 +571,8 @@ function renderTable() {
     <td style="color:var(--text-muted)">${d.contact||''}</td>
     <td><span class="badge ${d.category==='Zakat'?'bz':'bs'}">${d.category||''}</span></td>
     <td style="color:var(--text-muted)">${d.date||''}</td>
-    <td><span class="badge ${d.status==='Collected'?'bc':'bp'}">${d.status||'Pending'}</span></td>
     <td class="no-print" style="white-space:nowrap">
-      <button class="btn btn-sm btn-ghost" onclick="toggleStatus('${d._id}','${d.status||'Pending'}')">${d.status==='Collected'?'↩ Undo':'✓ Collected'}</button>
-      <button class="btn btn-sm btn-ghost" onclick="openEdit('${d._id}')" style="margin-left:4px">Edit</button>
+      <button class="btn btn-sm btn-ghost" onclick="openEdit('${d._id}')">Edit</button>
       <button class="btn btn-sm btn-danger" onclick="delRecord('${d._id}')" style="margin-left:4px">Del</button>
     </td></tr>`).join('');
 }
@@ -609,7 +598,7 @@ function renderCards() {
         <div class="bcard-row"><span class="l">Caste</span><span class="v">${d.caste||'—'}</span></div>
         <div class="bcard-row"><span class="l">Date</span><span class="v">${d.date||''}</span></div>
       </div>
-      <div class="bcard-foot"><span class="bcard-no">${d.cardNo||''}</span><span class="badge ${d.status==='Collected'?'bc':'bp'}" style="font-size:10px">${d.status||'Pending'}</span></div>
+      <div class="bcard-foot"><span class="bcard-no">${d.cardNo||''}</span></div>
     </div>`).join('')}</div>`).join('');
 }
 
@@ -695,7 +684,7 @@ function saveRecord() {
   if(editId) {
     p=update(ref(db,'beneficiaries/'+editId),rec);
   } else {
-    rec.status='Pending'; rec.createdAt=Date.now();
+    rec.createdAt=Date.now();
     p=push(ref(db,'beneficiaries'),rec);
   }
   p.then(()=>{toast(editId?'Record updated':'Person added');closeModal();})
@@ -709,16 +698,10 @@ function delRecord(id) {
   remove(ref(db,'beneficiaries/'+id)).then(()=>toast('Deleted')).catch(err=>toast('Error: '+err.message,'err'));
 }
 
-function toggleStatus(id,current) {
-  const ns=current==='Collected'?'Pending':'Collected';
-  window._fb.update(window._fb.ref(window._fb.db,'beneficiaries/'+id),{status:ns})
-    .then(()=>toast('Status: '+ns)).catch(err=>toast('Error: '+err.message,'err'));
-}
-
 function exportCSV() {
   const arr=rows(); if(!arr.length){toast('No data','err');return;}
-  const h=['Card No','Name','Father Name','Caste','Village','Contact','Category','Date','Status'];
-  const r=arr.map(d=>[d.cardNo,d.name,d.father,d.caste||'',d.village,d.contact,d.category,d.date,d.status]);
+  const h=['Card No','Name','Father Name','Caste','Village','Contact','Category','Date'];
+  const r=arr.map(d=>[d.cardNo,d.name,d.father,d.caste||'',d.village,d.contact,d.category,d.date]);
   const csv=[h,...r].map(row=>row.map(c=>`"${(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
