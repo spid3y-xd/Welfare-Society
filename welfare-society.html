@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welfare Society — Food Pack System</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/jameel-noori-nastaleeq" rel="stylesheet">
 
 <!-- ============================================================
   FIREBASE SETUP — PASTE YOUR CONFIG HERE
@@ -51,6 +52,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+.urdu{font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;line-height:1.8;}
 
 /* LOADING */
 #loading-overlay{position:fixed;inset:0;background:var(--green-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
@@ -398,11 +400,11 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
     <div class="form-grid">
       <div class="fg"><label>Card No</label><input id="f-cardno" placeholder="WS-001"></div>
       <div class="fg"><label>Village</label><select id="f-village"></select></div>
-      <div class="fg full"><label>Full Name</label><input id="f-name" placeholder="Muhammad Ali"></div>
-      <div class="fg full"><label>Father Name</label><input id="f-father" placeholder="Ahmad Khan"></div>
+      <div class="fg full"><label>Full Name (اردو)</label><input id="f-name" placeholder="محمد علی" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;"></div>
+      <div class="fg full"><label>Father Name (اردو)</label><input id="f-father" placeholder="احمد خان" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;"></div>
       <div class="fg"><label>Contact Number</label><input id="f-contact" placeholder="0300-1234567"></div>
       <div class="fg"><label>Category</label><select id="f-category"><option>Zakat</option><option>Sadaqa</option></select></div>
-      <div class="fg"><label>Caste</label><input id="f-caste" placeholder="e.g. Arain"></div>
+      <div class="fg"><label>Caste (ذات)</label><input id="f-caste" placeholder="اعوان / آرائیں" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;"></div>
       <div class="fg"><label>Distribution Date</label><input id="f-date" placeholder="15 April 2025"></div>
     </div>
     <div class="modal-footer">
@@ -564,10 +566,10 @@ function renderTable() {
   em.style.display='none';
   tb.innerHTML=filtered.map(d=>`<tr>
     <td style="font-weight:600;color:var(--green-dark);font-family:'Amiri',serif;font-size:14px">${d.cardNo||''}</td>
-    <td style="font-weight:500">${d.name||''}</td>
-    <td style="color:var(--text-muted)">${d.father||''}</td>
+    <td class="urdu">${d.name||''}</td>
+    <td class="urdu" style="color:var(--text-muted)">${d.father||''}</td>
     <td>${d.village||''}</td>
-    <td style="color:var(--text-muted)">${d.caste||'—'}</td>
+    <td class="urdu" style="color:var(--text-muted)">${d.caste||'—'}</td>
     <td style="color:var(--text-muted)">${d.contact||''}</td>
     <td><span class="badge ${d.category==='Zakat'?'bz':'bs'}">${d.category||''}</span></td>
     <td style="color:var(--text-muted)">${d.date||''}</td>
@@ -590,12 +592,12 @@ function renderCards() {
     <div class="bcard">
       <div class="bcard-head"><div class="ico">☪</div><div><h4>WELFARE SOCIETY</h4><p>Food Pack Distribution Card</p></div></div>
       <div class="bcard-body">
-        <div class="bcard-row"><span class="l">Name</span><span class="v">${d.name||''}</span></div>
-        <div class="bcard-row"><span class="l">Father</span><span class="v">${d.father||''}</span></div>
+        <div class="bcard-row"><span class="l">Name</span><span class="v urdu">${d.name||''}</span></div>
+        <div class="bcard-row"><span class="l">Father</span><span class="v urdu">${d.father||''}</span></div>
         <div class="bcard-row"><span class="l">Village</span><span class="v">${d.village||''}</span></div>
         <div class="bcard-row"><span class="l">Contact</span><span class="v">${d.contact||''}</span></div>
         <div class="bcard-row"><span class="l">Category</span><span class="v">${d.category||''}</span></div>
-        <div class="bcard-row"><span class="l">Caste</span><span class="v">${d.caste||'—'}</span></div>
+        <div class="bcard-row"><span class="l">Caste</span><span class="v urdu">${d.caste||'—'}</span></div>
         <div class="bcard-row"><span class="l">Date</span><span class="v">${d.date||''}</span></div>
       </div>
       <div class="bcard-foot"><span class="bcard-no">${d.cardNo||''}</span></div>
