@@ -18,7 +18,7 @@
   import { getDatabase, ref, onValue, push, set, update, remove }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ▼▼▼ PASTE YOUR SAME FIREBASE CONFIG HERE ▼▼▼
+ // ▼▼▼ PASTE YOUR SAME FIREBASE CONFIG HERE ▼▼▼
   const firebaseConfig = {
     apiKey:            "AIzaSyDgj2a6MK9iEXlJ7hvJYNVxrOTneQjkmHM",
     authDomain:        "welfare-society-f517a.firebaseapp.com",
@@ -164,25 +164,36 @@ input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,7
 .vtable tbody tr:last-child td{border-bottom:none}
 .vtable tbody tr:hover td{background:#f8fbf9}
 
-/* PRINT CARDS — 2 cols × 3 rows, RTL, blue */
-.print-page{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;page-break-after:always}
-.bcard{background:#fff;border:2px solid var(--blue);border-radius:10px;overflow:hidden;direction:rtl;position:relative;}
-.bcard-logo-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;opacity:0.07;}
-.bcard-logo-bg img{width:75%;max-height:80%;object-fit:contain;}
-.bcard-head{background:var(--blue);padding:9px 13px;display:flex;align-items:center;gap:8px;justify-content:flex-end;position:relative;z-index:1;}
-.bcard-head .ico{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.bcard-head-text{text-align:right}
-.bcard-head h4{font-family:'Jameel Noori Nastaleeq',serif;font-size:14px;font-weight:700;color:#fff;margin:0;line-height:1.5}
-.bcard-head p{font-family:'Jameel Noori Nastaleeq',serif;font-size:11px;color:rgba(255,255,255,.7);margin:0;line-height:1.5}
-.bcard-body{padding:7px 11px;background:var(--blue-pale);position:relative;z-index:1;}
-.bcard-row{display:flex;flex-direction:row-reverse;padding:3px 0;border-bottom:.5px solid var(--blue-border);align-items:baseline;}
-.bcard-row:last-child{border-bottom:none}
-.bcard-row .l{font-weight:700;color:var(--blue-dark);width:68px;flex-shrink:0;font-family:'Plus Jakarta Sans',sans-serif;font-size:9.5px;text-align:left;padding-left:2px;}
-.bcard-row .v{color:#1a2a4a;font-family:'Jameel Noori Nastaleeq',serif;font-size:14px;line-height:1.6;flex:1;text-align:right;}
-.bcard-row .v.en{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;line-height:1.5;}
-.bcard-foot{background:#fff;padding:5px 11px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;direction:ltr;}
-.bcard-no{font-size:11px;font-weight:700;color:var(--blue-dark);font-family:'Plus Jakarta Sans',sans-serif;}
-.bcard-village{font-size:10px;color:var(--text-muted);font-family:'Plus Jakarta Sans',sans-serif;}
+/* PRINT CARDS — UWS Style, 2×3, RTL */
+.print-page{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;page-break-after:always}
+.bcard{background:#fff;border:3px solid #1a4fa8;border-radius:5px;overflow:hidden;direction:rtl;font-family:'Jameel Noori Nastaleeq',serif;position:relative;}
+.bcard::before{content:'';position:absolute;inset:4px;border:1px solid #a0b8e0;border-radius:2px;pointer-events:none;z-index:2;}
+.bcard-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:55%;opacity:.07;z-index:0;pointer-events:none;}
+.bcard-wm img{width:100%;height:auto;}
+.bcard-header{background:linear-gradient(135deg,#0f2f6e 0%,#1a4fa8 100%);padding:5px 8px;display:flex;align-items:center;gap:7px;justify-content:flex-end;position:relative;z-index:3;border-bottom:2px solid #c8a400;}
+.bcard-header-logo{width:36px;height:36px;flex-shrink:0;border-radius:50%;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;}
+.bcard-header-logo img{width:100%;height:100%;object-fit:cover;}
+.bcard-header-logo-ph{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.bcard-header-text{text-align:right;flex:1;}
+.bcard-header-text h4{font-family:'Jameel Noori Nastaleeq',serif;font-size:16px;font-weight:700;color:#fff;margin:0;line-height:1.4;}
+.bcard-header-text p{font-family:'Jameel Noori Nastaleeq',serif;font-size:11px;color:#f0c040;margin:0;line-height:1.3;}
+.bcard-banner{background:#1a4fa8;text-align:center;padding:2px 6px;border-top:1px solid #c8a400;border-bottom:1px solid #c8a400;position:relative;z-index:3;}
+.bcard-banner span{font-family:'Jameel Noori Nastaleeq',serif;font-size:13px;font-weight:700;color:#fff;background:#1a4fa8;padding:0 8px;border:1px solid #c8a400;border-radius:3px;display:inline-block;}
+.bcard-body{padding:3px 9px 2px;position:relative;z-index:3;background:#fff;}
+.bcard-field{display:flex;flex-direction:row;align-items:baseline;border-bottom:1px dotted #999;min-height:20px;padding:1px 0;}
+.bcard-field:last-child{border-bottom:none;}
+.bcard-field-label{font-family:'Jameel Noori Nastaleeq',serif;font-size:12px;font-weight:700;color:#0f2f6e;white-space:nowrap;padding-left:4px;flex-shrink:0;line-height:1.6;}
+.bcard-field-value{font-family:'Jameel Noori Nastaleeq',serif;font-size:12px;color:#111;flex:1;text-align:right;line-height:1.6;padding-right:2px;}
+.bcard-field-value.en{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;line-height:1.5;}
+.bcard-cat-row{display:flex;flex-direction:row;align-items:center;border-bottom:1px dotted #999;min-height:20px;padding:1px 0;gap:4px;}
+.bcard-cat-label{font-family:'Jameel Noori Nastaleeq',serif;font-size:12px;font-weight:700;color:#0f2f6e;padding-left:4px;flex-shrink:0;line-height:1.6;}
+.bcard-cat-options{display:flex;gap:8px;flex:1;justify-content:flex-end;align-items:center;}
+.bcard-cat-opt{display:flex;align-items:center;gap:3px;font-family:'Jameel Noori Nastaleeq',serif;font-size:12px;color:#111;flex-direction:row-reverse;}
+.bcard-checkbox{width:11px;height:11px;border:1.5px solid #333;display:inline-flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;background:#fff;}
+.bcard-checkbox.ticked{background:#1a4fa8;border-color:#1a4fa8;color:#fff;}
+.bcard-footer{background:#e8f0fb;border-top:1px solid #a0b8e0;padding:3px 9px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:3;direction:ltr;}
+.bcard-serial{font-family:'Plus Jakarta Sans',sans-serif;font-size:9.5px;font-weight:600;color:#0f2f6e;direction:rtl;display:flex;align-items:center;gap:3px;}
+.bcard-note{font-family:'Jameel Noori Nastaleeq',serif;font-size:9.5px;color:#444;text-align:right;line-height:1.3;}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;display:none;align-items:center;justify-content:center}
@@ -602,48 +613,83 @@ let cardLogoDataUrl = null;
 function handleLogoUpload(e) {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => { cardLogoDataUrl = ev.target.result; renderCards(); toast('Logo loaded ✓'); };
+  reader.onload = ev => { cardLogoDataUrl = ev.target.result; renderCards(); toast('لوگو لوڈ ہو گیا ✓'); };
   reader.readAsDataURL(file);
 }
 
 function renderCards() {
   if(!dataLoaded) return;
-  const fv  = document.getElementById('card-filter-village')?.value||'';
+  const fv       = document.getElementById('card-filter-village')?.value||'';
   const distDate = document.getElementById('card-dist-date')?.value||'';
-  const arr = fv ? rows().filter(d=>d.village===fv) : rows();
-  const c   = document.getElementById('cards-container'); if(!c) return;
+  const arr      = fv ? rows().filter(d=>d.village===fv) : rows();
+  const c        = document.getElementById('cards-container'); if(!c) return;
   if(!arr.length){
     c.innerHTML='<div class="empty-state card" style="padding:48px"><div class="ico">🪪</div><p>No beneficiaries found.</p></div>';
     return;
   }
-  const logoBg = cardLogoDataUrl
-    ? `<div class="bcard-logo-bg"><img src="${cardLogoDataUrl}" alt="logo"></div>`
+
+  const logoHtml = cardLogoDataUrl
+    ? `<div class="bcard-header-logo"><img src="${cardLogoDataUrl}" alt="logo"></div>`
+    : `<div class="bcard-header-logo-ph">☪</div>`;
+
+  const wmHtml = cardLogoDataUrl
+    ? `<div class="bcard-wm"><img src="${cardLogoDataUrl}" alt="wm"></div>`
     : '';
 
-  const makeCard = d => `
-    <div class="bcard">
-      ${logoBg}
-      <div class="bcard-head">
-        <div class="bcard-head-text">
+  const makeCard = d => {
+    const isZakat = d.category === 'Zakat';
+    const dateVal = distDate || d.date || '۔۔۔۔۔۔۔۔۔۔۔۔';
+    return `<div class="bcard">
+      ${wmHtml}
+      <div class="bcard-header">
+        <div class="bcard-header-text">
           <h4>یونٹی ویلفیئر سوسائٹی</h4>
-          <p>راشن تقسیم کارڈ</p>
+          <p>انسانیت کی خدمت، ہمارا مشن</p>
         </div>
-        <div class="ico">☪</div>
+        ${logoHtml}
       </div>
+      <div class="bcard-banner"><span>فوڈ پیک کارڈ</span></div>
       <div class="bcard-body">
-        <div class="bcard-row"><span class="l">نام</span><span class="v">${d.name||''}</span></div>
-        <div class="bcard-row"><span class="l">والد کا نام</span><span class="v">${d.father||''}</span></div>
-        <div class="bcard-row"><span class="l">ذات</span><span class="v">${d.caste||'—'}</span></div>
-        <div class="bcard-row"><span class="l">گاؤں</span><span class="v">${d.village||''}</span></div>
-        <div class="bcard-row"><span class="l">رابطہ</span><span class="v en">${d.contact||''}</span></div>
-        <div class="bcard-row"><span class="l">زکوٰۃ/صدقہ</span><span class="v">${d.category==='Zakat'?'زکوٰۃ':'صدقہ'}</span></div>
-        <div class="bcard-row"><span class="l">تاریخ</span><span class="v">${distDate||d.date||'—'}</span></div>
+        <div class="bcard-field">
+          <span class="bcard-field-label">نام:</span>
+          <span class="bcard-field-value">${d.name||'۔۔۔۔۔۔۔۔۔۔۔۔۔۔۔'}</span>
+        </div>
+        <div class="bcard-field">
+          <span class="bcard-field-label">ولدیت:</span>
+          <span class="bcard-field-value">${d.father||'۔۔۔۔۔۔۔۔۔۔۔۔۔۔۔'}</span>
+        </div>
+        <div class="bcard-field">
+          <span class="bcard-field-label">قوم/ذات:</span>
+          <span class="bcard-field-value">${d.caste||'۔۔۔۔۔۔۔۔'}</span>
+        </div>
+        <div class="bcard-cat-row">
+          <span class="bcard-cat-label">کیٹیگری:</span>
+          <div class="bcard-cat-options">
+            <span class="bcard-cat-opt">
+              <span class="bcard-checkbox ${isZakat?'ticked':''}"></span>
+              زکوٰۃ
+            </span>
+            <span class="bcard-cat-opt">
+              <span class="bcard-checkbox ${!isZakat?'ticked':''}"></span>
+              صدقہ
+            </span>
+          </div>
+        </div>
+        <div class="bcard-field">
+          <span class="bcard-field-label">فون نمبر:</span>
+          <span class="bcard-field-value en">${d.contact||'۔۔۔۔۔۔۔۔۔۔'}</span>
+        </div>
+        <div class="bcard-field">
+          <span class="bcard-field-label">تقسیم کی تاریخ:</span>
+          <span class="bcard-field-value">${dateVal}</span>
+        </div>
       </div>
-      <div class="bcard-foot">
-        <span class="bcard-no">${d.cardNo||''}</span>
-        <span class="bcard-village">${d.village||''}</span>
+      <div class="bcard-footer">
+        <span class="bcard-serial">UWS-<span style="border-bottom:1px solid #0f2f6e;min-width:36px;display:inline-block;text-align:center">${(d.cardNo||'').replace(/[^\d]/g,'')}</span> :سیریل نمبر</span>
+        <span class="bcard-note">یہ کارڈ مخصوص تاریخ پر قابل قبول ہو گا۔</span>
       </div>
     </div>`;
+  };
 
   const pages = [];
   for(let i=0; i<arr.length; i+=6) pages.push(arr.slice(i,i+6));
