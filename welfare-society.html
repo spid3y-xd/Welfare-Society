@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welfare Society — Food Pack System</title>
+<title>Unity Welfare Society — راشن تقسیم</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/jameel-noori-nastaleeq" rel="stylesheet">
 
 <!-- ============================================================
   FIREBASE SETUP — PASTE YOUR CONFIG HERE
@@ -41,36 +42,40 @@
 :root{
   --green:#1a5c38;--green-dark:#0f3d24;--green-mid:#2d7a50;
   --green-light:#e8f5ee;--green-pale:#f4faf7;
-  --blue-light:#e6f1fb;--blue:#185fa5;
+  --blue-light:#e8f0fb;--blue:#1a4fa8;--blue-dark:#0f2f6e;--blue-mid:#2560c4;
+  --blue-pale:#f0f4fd;--blue-border:#c2d3f0;
   --amber-light:#faeeda;--amber:#854f0b;
   --red-light:#fcebeb;--red:#a32d2d;
-  --bg:#f0f4f1;--surface:#ffffff;--border:#d4e4da;
-  --text:#1a2e22;--text-muted:#5a7a65;--text-light:#8aaa95;
+  --bg:#f0f3fa;--surface:#ffffff;--border:#c8d8f0;
+  --text:#0f1e3a;--text-muted:#3a5080;--text-light:#7a90b8;
   --radius:10px;--radius-lg:14px;
-  --shadow-sm:0 1px 3px rgba(26,92,56,.1);
+  --shadow-sm:0 1px 3px rgba(26,70,168,.1);
+  /* map old green vars to blue so existing CSS works */
+  --sidebar-bg:#0f2f6e;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+.urdu{font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;line-height:1.8;}
 
 /* LOADING */
-#loading-overlay{position:fixed;inset:0;background:var(--green-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
+#loading-overlay{position:fixed;inset:0;background:var(--blue-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
 #loading-overlay .spin{font-size:46px;animation:spin 2s linear infinite;margin-bottom:14px}
 #loading-overlay p{color:rgba(255,255,255,.5);font-size:13px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* LOGIN */
-#login-screen{display:none;align-items:center;justify-content:center;min-height:100vh;background:var(--green-dark)}
+#login-screen{display:none;align-items:center;justify-content:center;min-height:100vh;background:var(--blue-dark)}
 .login-box{background:#fff;border-radius:18px;padding:36px 40px;width:360px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .login-logo{text-align:center;margin-bottom:28px}
-.login-logo .icon{width:56px;height:56px;border-radius:50%;background:var(--green-light);display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px}
-.login-logo h2{font-family:'Amiri',serif;font-size:22px;color:var(--green-dark);font-weight:700}
+.login-logo .icon{width:56px;height:56px;border-radius:50%;background:var(--blue-light);display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px}
+.login-logo h2{font-family:'Amiri',serif;font-size:22px;color:var(--blue-dark);font-weight:700}
 .login-logo p{font-size:12px;color:var(--text-muted);margin-top:3px}
 .login-box label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:5px}
 .login-box input{width:100%;border:1px solid var(--border);border-radius:var(--radius);padding:10px 13px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s;margin-bottom:14px}
-.login-box input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,92,56,.08)}
+.login-box input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,70,168,.08)}
 .login-error{background:var(--red-light);color:var(--red);border-radius:var(--radius);padding:9px 13px;font-size:12px;margin-bottom:14px;display:none}
-.login-btn{width:100%;background:var(--green);color:#fff;border:none;border-radius:var(--radius);padding:11px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.login-btn:hover{background:var(--green-dark)}
+.login-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);padding:11px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.login-btn:hover{background:var(--blue-dark)}
 .login-btn:disabled{opacity:.6;cursor:not-allowed}
 
 /* APP */
@@ -78,7 +83,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .layout{display:flex;min-height:100vh}
 
 /* SIDEBAR */
-.sidebar{width:220px;background:var(--green-dark);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:50}
+.sidebar{width:220px;background:var(--blue-dark);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:50}
 .sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
 .sidebar-logo .icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:9px}
 .org-name{font-family:'Amiri',serif;font-size:17px;color:#fff;font-weight:700;line-height:1.3}
@@ -111,15 +116,15 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .stat-card .lbl{font-size:11px;font-weight:600;color:var(--text-light);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px}
 .stat-card .val{font-size:28px;font-weight:600;line-height:1}
 .stat-card .sub{font-size:11px;color:var(--text-muted);margin-top:5px}
-.stat-card.sg{border-left:3px solid var(--green)}
+.stat-card.sg{border-left:3px solid var(--blue)}
 .stat-card.sa{border-left:3px solid #e59400}
 .stat-card.sb{border-left:3px solid var(--blue)}
 .stat-card.sp{border-left:3px solid #c8a400}
 
 /* CARD */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:18px}
-.card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--green-pale)}
-.card-header h3{font-size:14px;font-weight:600;color:var(--green-dark)}
+.card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--blue-pale)}
+.card-header h3{font-size:14px;font-weight:600;color:var(--blue-dark)}
 
 /* TOOLBAR */
 .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--border)}
@@ -127,18 +132,18 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .sw svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.4}
 .sw input{padding-left:34px;width:100%}
 input,select{border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;font-family:inherit;background:var(--surface);color:var(--text);outline:none;transition:border-color .15s}
-input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,92,56,.08)}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,70,168,.08)}
 
 /* BUTTONS */
 .btn{padding:8px 16px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:var(--surface);color:var(--text);display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
-.btn:hover{background:var(--green-light);border-color:var(--green);color:var(--green-dark)}
-.btn-primary{background:var(--green);color:#fff;border-color:var(--green)}
-.btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark);color:#fff}
+.btn:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue-dark)}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff}
 .btn-danger{background:var(--red-light);color:var(--red);border-color:#f0b8b8}
 .btn-danger:hover{background:#f7c1c1}
 .btn-sm{padding:5px 10px;font-size:12px}
 .btn-ghost{border-color:transparent;background:transparent}
-.btn-ghost:hover{background:var(--green-light);border-color:var(--border)}
+.btn-ghost:hover{background:var(--blue-light);border-color:var(--border)}
 
 /* TABLE */
 .data-table{width:100%;border-collapse:collapse}
@@ -149,10 +154,8 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
 
 /* BADGES */
 .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.bz{background:var(--green-light);color:var(--green-dark)}
+.bz{background:var(--blue-light);color:var(--blue-dark)}
 .bs{background:var(--blue-light);color:var(--blue)}
-.bc{background:#eaf3de;color:#3b6d11}
-.bp{background:var(--amber-light);color:var(--amber)}
 
 /* VILLAGE TABLE */
 .vtable{width:100%;border-collapse:collapse}
@@ -160,29 +163,27 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
 .vtable td{padding:12px 16px;border-bottom:1px solid #f0f5f2;font-size:13px}
 .vtable tbody tr:last-child td{border-bottom:none}
 .vtable tbody tr:hover td{background:#f8fbf9}
-.pbar{height:5px;border-radius:3px;background:#e8f5ee;overflow:hidden;min-width:60px}
-.pbar-fill{height:100%;background:var(--green);border-radius:3px}
 
-/* PRINT CARDS */
-.print-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;page-break-after:always}
-.bcard{background:#fff;border:2px solid var(--green);border-radius:10px;overflow:hidden}
-.bcard-head{background:var(--green);padding:11px 15px;display:flex;align-items:center;gap:10px}
+/* PRINT CARDS — 2 cols × 3 rows */
+.print-page{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;page-break-after:always}
+.bcard{background:#fff;border:2px solid var(--blue);border-radius:10px;overflow:hidden}
+.bcard-head{background:var(--blue);padding:11px 15px;display:flex;align-items:center;gap:10px}
 .bcard-head .ico{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
 .bcard-head h4{font-size:12px;font-weight:700;color:#fff;margin:0}
 .bcard-head p{font-size:10px;color:rgba(255,255,255,.6);margin:1px 0 0;font-style:italic}
-.bcard-body{padding:9px 13px;background:var(--green-pale)}
-.bcard-row{display:flex;font-size:12px;padding:3.5px 0;border-bottom:.5px solid #d4e4da}
+.bcard-body{padding:9px 13px;background:var(--blue-pale)}
+.bcard-row{display:flex;font-size:12px;padding:3.5px 0;border-bottom:.5px solid var(--blue-border)}
 .bcard-row:last-child{border-bottom:none}
-.bcard-row .l{font-weight:600;color:var(--green-dark);width:80px;flex-shrink:0;font-size:11px}
+.bcard-row .l{font-weight:600;color:var(--blue-dark);width:80px;flex-shrink:0;font-size:11px}
 .bcard-row .v{color:#2a3a2e}
 .bcard-foot{background:#fff;padding:7px 13px;display:flex;align-items:center;justify-content:space-between}
-.bcard-no{font-size:13px;font-weight:700;color:var(--green-dark);font-family:'Amiri',serif}
+.bcard-no{font-size:13px;font-weight:700;color:var(--blue-dark);font-family:'Amiri',serif}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:200;display:none;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border-radius:var(--radius-lg);padding:26px 28px;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);border:1px solid var(--border)}
-.modal h3{font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.modal h3{font-size:16px;font-weight:600;color:var(--blue-dark);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
 .fg{display:flex;flex-direction:column;gap:5px}
 .fg.full{grid-column:1/-1}
@@ -194,7 +195,7 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
 .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--green-dark);color:#fff;padding:11px 18px;border-radius:var(--radius);font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(100px);opacity:0;transition:all .3s;z-index:999}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--blue-dark);color:#fff;padding:11px 18px;border-radius:var(--radius);font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(100px);opacity:0;transition:all .3s;z-index:999}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.err{background:var(--red)}
 
@@ -213,7 +214,7 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
   .content{padding:0!important}
   .tab-section{display:none!important}
   #tab-cards{display:block!important}
-  .print-grid{page-break-after:always;gap:10px}
+  .print-page{page-break-after:always;gap:10px}
   .bcard{page-break-inside:avoid}
   body{background:#fff}
 }
@@ -242,12 +243,12 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
 
 <!-- LOGIN -->
 <div id="login-screen" style="display:none;flex:1">
-  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--green-dark)">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--blue-dark)">
     <div class="login-box">
       <div class="login-logo">
         <div class="icon">☪</div>
-        <h2>Welfare Society</h2>
-        <p>Food Pack Distribution System</p>
+        <h2>Unity Welfare Society</h2>
+        <p>راشن تقسیم نظام</p>
       </div>
       <label>Email Address</label>
       <input type="email" id="login-email" placeholder="volunteer@example.com" autocomplete="username">
@@ -267,8 +268,8 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="icon">☪</div>
-      <div class="org-name">Welfare<br>Society</div>
-      <div class="org-sub">Food Pack System</div>
+      <div class="org-name">Unity Welfare<br>Society</div>
+      <div class="org-sub">راشن تقسیم</div>
     </div>
     <nav class="nav-links">
       <button class="nav-link active" onclick="switchTab('dashboard')">
@@ -327,7 +328,7 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
           <div class="card-header"><h3>Village-wise Summary</h3></div>
           <div style="overflow-x:auto">
             <table class="vtable">
-              <thead><tr><th>Village</th><th>Total</th><th>Zakat</th><th>Sadaqa</th><th>Collected</th><th>Pending</th><th>Progress</th></tr></thead>
+              <thead><tr><th>Village</th><th>Total</th><th>Zakat</th><th>Sadaqa</th></tr></thead>
               <tbody id="village-tbody"></tbody>
             </table>
           </div>
@@ -346,15 +347,13 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
             <select id="filter-category" onchange="renderTable()">
               <option value="">All Categories</option><option>Zakat</option><option>Sadaqa</option>
             </select>
-            <select id="filter-status" onchange="renderTable()">
-              <option value="">All Status</option><option>Pending</option><option>Collected</option>
-            </select>
+            <select id="filter-status" style="display:none"></select>
           </div>
           <div style="overflow-x:auto">
             <table class="data-table">
               <thead><tr>
                 <th>Card No</th><th>Name</th><th>Father Name</th><th>Village</th>
-                <th>Caste</th><th>Contact</th><th>Category</th><th>Date</th><th>Status</th>
+                <th>Caste</th><th>Contact</th><th>Category</th><th>Date</th>
                 <th class="no-print">Actions</th>
               </tr></thead>
               <tbody id="table-body"></tbody>
@@ -373,7 +372,7 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
             <select id="card-filter-village" onchange="renderCards()"><option value="">All Villages</option></select>
             <button class="btn btn-primary" onclick="window.print()">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-              Print Cards (4 per A4)
+              Print Cards (6 per A4)
             </button>
             <span style="font-size:12px;color:var(--text-muted)">Select a village to print one village at a time</span>
           </div>
@@ -404,11 +403,11 @@ input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,
     <div class="form-grid">
       <div class="fg"><label>Card No</label><input id="f-cardno" placeholder="WS-001"></div>
       <div class="fg"><label>Village</label><select id="f-village"></select></div>
-      <div class="fg full"><label>Full Name</label><input id="f-name" placeholder="Muhammad Ali"></div>
-      <div class="fg full"><label>Father Name</label><input id="f-father" placeholder="Ahmad Khan"></div>
+      <div class="fg full"><label>Full Name (اردو)</label><input id="f-name" placeholder="محمد علی" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;"></div>
+      <div class="fg full"><label>Father Name (اردو)</label><input id="f-father" placeholder="احمد خان" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;"></div>
       <div class="fg"><label>Contact Number</label><input id="f-contact" placeholder="0300-1234567"></div>
       <div class="fg"><label>Category</label><select id="f-category"><option>Zakat</option><option>Sadaqa</option></select></div>
-      <div class="fg"><label>Caste</label><input id="f-caste" placeholder="e.g. Arain"></div>
+      <div class="fg"><label>Caste (ذات)</label><input id="f-caste" placeholder="اعوان / آرائیں" style="font-family:'Jameel Noori Nastaleeq',serif;font-size:17px;direction:rtl;"></div>
       <div class="fg"><label>Distribution Date</label><input id="f-date" placeholder="15 April 2025"></div>
     </div>
     <div class="modal-footer">
@@ -539,19 +538,18 @@ function switchTab(tab) {
 
 // DASHBOARD
 function renderDashboard() {
-  const arr=rows(), total=arr.length, coll=arr.filter(d=>d.status==='Collected').length;
+  const arr=rows(), total=arr.length;
   const zakat=arr.filter(d=>d.category==='Zakat').length, vc=allVils().length;
   document.getElementById('stats-grid').innerHTML=`
     <div class="stat-card sg"><div class="lbl">Total Beneficiaries</div><div class="val">${total}</div><div class="sub">Across ${vc} villages</div></div>
-    <div class="stat-card sp"><div class="lbl">Collected</div><div class="val" style="color:#3b6d11">${coll}</div><div class="sub">${total?Math.round(coll/total*100):0}% done</div></div>
-    <div class="stat-card sa"><div class="lbl">Pending</div><div class="val" style="color:var(--amber)">${total-coll}</div><div class="sub">Yet to collect</div></div>
-    <div class="stat-card sb"><div class="lbl">Zakat / Sadaqa</div><div class="val" style="font-size:20px">${zakat} / ${total-zakat}</div><div class="sub">Category split</div></div>`;
+    <div class="stat-card sb"><div class="lbl">Zakat</div><div class="val" style="color:var(--blue-dark)">${zakat}</div><div class="sub">${total?Math.round(zakat/total*100):0}% of total</div></div>
+    <div class="stat-card sa"><div class="lbl">Sadaqa</div><div class="val" style="color:var(--amber)">${total-zakat}</div><div class="sub">${total?Math.round((total-zakat)/total*100):0}% of total</div></div>
+    <div class="stat-card sp"><div class="lbl">Villages</div><div class="val">${vc}</div><div class="sub">Registered villages</div></div>`;
 
   document.getElementById('village-tbody').innerHTML = allVils().map(v => {
     const vd=arr.filter(d=>d.village===v); if(!vd.length) return '';
-    const vc2=vd.filter(d=>d.status==='Collected').length, pct=Math.round(vc2/vd.length*100);
-    return `<tr><td><strong>${v}</strong></td><td>${vd.length}</td><td>${vd.filter(d=>d.category==='Zakat').length}</td><td>${vd.filter(d=>d.category==='Sadaqa').length}</td><td style="color:#3b6d11;font-weight:600">${vc2}</td><td style="color:var(--amber);font-weight:600">${vd.length-vc2}</td><td><div style="display:flex;align-items:center;gap:8px"><div class="pbar" style="flex:1"><div class="pbar-fill" style="width:${pct}%"></div></div><span style="font-size:11px;color:var(--text-muted);min-width:28px">${pct}%</span></div></td></tr>`;
-  }).join('')||`<tr><td colspan="7" style="padding:24px;text-align:center;color:var(--text-muted)">No data yet.</td></tr>`;
+    return `<tr><td><strong>${v}</strong></td><td>${vd.length}</td><td>${vd.filter(d=>d.category==='Zakat').length}</td><td>${vd.filter(d=>d.category==='Sadaqa').length}</td></tr>`;
+  }).join('')||`<tr><td colspan="4" style="padding:24px;text-align:center;color:var(--text-muted)">No data yet.</td></tr>`;
 }
 
 // TABLE
@@ -560,11 +558,9 @@ function renderTable() {
   const q=(document.getElementById('search-input')?.value||'').toLowerCase();
   const fv=document.getElementById('filter-village')?.value||'';
   const fc=document.getElementById('filter-category')?.value||'';
-  const fs=document.getElementById('filter-status')?.value||'';
   const filtered=rows().filter(d=>{
     if(fv&&d.village!==fv) return false;
     if(fc&&d.category!==fc) return false;
-    if(fs&&d.status!==fs) return false;
     if(q&&!`${d.name} ${d.father} ${d.cardNo} ${d.village} ${d.contact} ${d.caste||''}`.toLowerCase().includes(q)) return false;
     return true;
   });
@@ -572,18 +568,16 @@ function renderTable() {
   if(!filtered.length){tb.innerHTML='';em.style.display='block';return;}
   em.style.display='none';
   tb.innerHTML=filtered.map(d=>`<tr>
-    <td style="font-weight:600;color:var(--green-dark);font-family:'Amiri',serif;font-size:14px">${d.cardNo||''}</td>
-    <td style="font-weight:500">${d.name||''}</td>
-    <td style="color:var(--text-muted)">${d.father||''}</td>
+    <td style="font-weight:600;color:var(--blue-dark);font-family:'Amiri',serif;font-size:14px">${d.cardNo||''}</td>
+    <td class="urdu">${d.name||''}</td>
+    <td class="urdu" style="color:var(--text-muted)">${d.father||''}</td>
     <td>${d.village||''}</td>
-    <td style="color:var(--text-muted)">${d.caste||'—'}</td>
+    <td class="urdu" style="color:var(--text-muted)">${d.caste||'—'}</td>
     <td style="color:var(--text-muted)">${d.contact||''}</td>
     <td><span class="badge ${d.category==='Zakat'?'bz':'bs'}">${d.category||''}</span></td>
     <td style="color:var(--text-muted)">${d.date||''}</td>
-    <td><span class="badge ${d.status==='Collected'?'bc':'bp'}">${d.status||'Pending'}</span></td>
     <td class="no-print" style="white-space:nowrap">
-      <button class="btn btn-sm btn-ghost" onclick="toggleStatus('${d._id}','${d.status||'Pending'}')">${d.status==='Collected'?'↩ Undo':'✓ Collected'}</button>
-      <button class="btn btn-sm btn-ghost" onclick="openEdit('${d._id}')" style="margin-left:4px">Edit</button>
+      <button class="btn btn-sm btn-ghost" onclick="openEdit('${d._id}')">Edit</button>
       <button class="btn btn-sm btn-danger" onclick="delRecord('${d._id}')" style="margin-left:4px">Del</button>
     </td></tr>`).join('');
 }
@@ -596,20 +590,20 @@ function renderCards() {
   const c=document.getElementById('cards-container'); if(!c) return;
   if(!arr.length){c.innerHTML='<div class="empty-state card" style="padding:48px"><div class="ico">🪪</div><p>No beneficiaries found.</p></div>';return;}
   const pages=[];
-  for(let i=0;i<arr.length;i+=4) pages.push(arr.slice(i,i+4));
-  c.innerHTML=pages.map(page=>`<div class="print-grid">${page.map(d=>`
+  for(let i=0;i<arr.length;i+=6) pages.push(arr.slice(i,i+6));
+  c.innerHTML=pages.map(page=>`<div class="print-page">${page.map(d=>`
     <div class="bcard">
-      <div class="bcard-head"><div class="ico">☪</div><div><h4>WELFARE SOCIETY</h4><p>Food Pack Distribution Card</p></div></div>
+      <div class="bcard-head"><div class="ico">☪</div><div><h4>UNITY WELFARE SOCIETY</h4><p>Food Pack Distribution Card</p></div></div>
       <div class="bcard-body">
-        <div class="bcard-row"><span class="l">Name</span><span class="v">${d.name||''}</span></div>
-        <div class="bcard-row"><span class="l">Father</span><span class="v">${d.father||''}</span></div>
+        <div class="bcard-row"><span class="l">Name</span><span class="v urdu">${d.name||''}</span></div>
+        <div class="bcard-row"><span class="l">Father</span><span class="v urdu">${d.father||''}</span></div>
+        <div class="bcard-row"><span class="l">Caste</span><span class="v urdu">${d.caste||'—'}</span></div>
         <div class="bcard-row"><span class="l">Village</span><span class="v">${d.village||''}</span></div>
         <div class="bcard-row"><span class="l">Contact</span><span class="v">${d.contact||''}</span></div>
         <div class="bcard-row"><span class="l">Category</span><span class="v">${d.category||''}</span></div>
-        <div class="bcard-row"><span class="l">Caste</span><span class="v">${d.caste||'—'}</span></div>
         <div class="bcard-row"><span class="l">Date</span><span class="v">${d.date||''}</span></div>
       </div>
-      <div class="bcard-foot"><span class="bcard-no">${d.cardNo||''}</span><span class="badge ${d.status==='Collected'?'bc':'bp'}" style="font-size:10px">${d.status||'Pending'}</span></div>
+      <div class="bcard-foot"><span class="bcard-no">${d.cardNo||''}</span></div>
     </div>`).join('')}</div>`).join('');
 }
 
@@ -620,7 +614,7 @@ function renderVillages() {
   el.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
     ${all.map(v=>{
       const c=arr.filter(d=>d.village===v).length;
-      return `<div style="background:var(--green-pale);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
+      return `<div style="background:var(--blue-pale);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
         <div><div style="font-weight:600;font-size:13px">${v}</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px">${c} person${c!==1?'s':''}</div></div>
         <button class="btn btn-sm btn-ghost no-print" onclick="removeVillage('${v}')" ${c>0?'disabled style="opacity:.3;cursor:not-allowed"':''}>✕</button>
       </div>`;}).join('')}
@@ -695,7 +689,7 @@ function saveRecord() {
   if(editId) {
     p=update(ref(db,'beneficiaries/'+editId),rec);
   } else {
-    rec.status='Pending'; rec.createdAt=Date.now();
+    rec.createdAt=Date.now();
     p=push(ref(db,'beneficiaries'),rec);
   }
   p.then(()=>{toast(editId?'Record updated':'Person added');closeModal();})
@@ -709,16 +703,10 @@ function delRecord(id) {
   remove(ref(db,'beneficiaries/'+id)).then(()=>toast('Deleted')).catch(err=>toast('Error: '+err.message,'err'));
 }
 
-function toggleStatus(id,current) {
-  const ns=current==='Collected'?'Pending':'Collected';
-  window._fb.update(window._fb.ref(window._fb.db,'beneficiaries/'+id),{status:ns})
-    .then(()=>toast('Status: '+ns)).catch(err=>toast('Error: '+err.message,'err'));
-}
-
 function exportCSV() {
   const arr=rows(); if(!arr.length){toast('No data','err');return;}
-  const h=['Card No','Name','Father Name','Caste','Village','Contact','Category','Date','Status'];
-  const r=arr.map(d=>[d.cardNo,d.name,d.father,d.caste||'',d.village,d.contact,d.category,d.date,d.status]);
+  const h=['Card No','Name','Father Name','Caste','Village','Contact','Category','Date'];
+  const r=arr.map(d=>[d.cardNo,d.name,d.father,d.caste||'',d.village,d.contact,d.category,d.date]);
   const csv=[h,...r].map(row=>row.map(c=>`"${(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
