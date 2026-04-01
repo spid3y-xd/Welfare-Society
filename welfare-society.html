@@ -61,13 +61,50 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .data-table th{text-align:left;padding:12px 20px;background:#f8fafc;font-size:11px;color:var(--text-light);text-transform:uppercase}
 .data-table td{padding:12px 20px;border-bottom:1px solid #f1f5f9; vertical-align: middle;}
 
-/* PRINT CARDS - 6 Per Page */
-.print-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); gap: 12px; padding: 10px; height: 100%; }
-.bcard { border: 3px solid var(--blue-navy); border-radius: 12px; height: 275px; display: flex; flex-direction: column; overflow: hidden; background:#fff; }
-.bcard-head { background: var(--blue-navy); color: #fff; padding: 10px; text-align: center; }
-.bcard-body { padding: 12px; flex: 1; }
-.bcard-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; }
-.bcard-foot { background: var(--blue-pale); padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
+/* FANCY PRINT CARDS - 6 Per Page */
+.print-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: repeat(3, 1fr); 
+    gap: 15px; 
+    padding: 10px; 
+    width: 210mm; /* A4 Width */
+    height: 297mm; /* A4 Height */
+    margin: 0 auto;
+}
+.bcard { 
+    border: 2px solid var(--blue-navy); 
+    outline: 4px solid var(--blue-navy);
+    outline-offset: -10px;
+    border-radius: 8px; 
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+    background:#fff;
+    position: relative;
+}
+.bcard-head { 
+    background: var(--blue-navy); 
+    color: #fff; 
+    padding: 15px 10px; 
+    text-align: center; 
+}
+.bcard-body { 
+    padding: 20px 25px; 
+    flex: 1; 
+    background-image: linear-gradient(var(--blue-pale) 1px, transparent 1px);
+    background-size: 100% 30px;
+}
+.bcard-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #ddd; }
+.bcard-row span:first-child { font-weight: bold; font-size: 10px; color: var(--blue-navy); }
+.bcard-foot { 
+    background: var(--blue-navy); 
+    color: #fff;
+    padding: 8px 15px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:200}
@@ -78,17 +115,19 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .btn-danger{color:#d32f2f; background:#fff5f5}
 
 @media print {
-    @page { size: A4; margin: 0.5cm; }
+    @page { size: A4 portrait; margin: 0; }
+    body { background: #fff; }
     .sidebar, .topbar, .no-print, #loading-overlay { display: none !important; }
     .main { margin-left: 0 !important; }
     .tab-section { display: none !important; }
     #tab-cards { display: block !important; }
+    .print-grid { page-break-after: always; padding: 0; }
 }
 </style>
 </head>
 <body>
 
-<div id="loading-overlay"><div style="color:#fff">Loading Unity Welfare System...</div></div>
+<div id="loading-overlay"><div style="color:#fff">Syncing Unity Welfare System...</div></div>
 
 <div id="login-screen" style="display:none; align-items:center; justify-content:center; min-height:100vh; background:var(--blue-dark)">
   <div style="background:#fff; padding:40px; border-radius:15px; width:350px">
@@ -101,7 +140,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 <div id="app-shell" style="display:none">
   <aside class="sidebar">
-    <div class="sidebar-logo"><h2 style="font-family:Amiri">UWS Pakistan</h2></div>
+    <div class="sidebar-logo"><h2 style="font-family:Amiri; padding-left: 10px;">UWS Pakistan</h2></div>
     <nav style="margin-top:20px">
       <button class="nav-link active" onclick="switchTab('dashboard')">Dashboard</button>
       <button class="nav-link" onclick="switchTab('beneficiaries')">Beneficiaries</button>
@@ -114,7 +153,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <main class="main">
     <header class="topbar">
       <h1 id="page-title" style="font-size:20px">Dashboard</h1>
-      <button class="btn btn-primary" onclick="openAdd()">+ Add Beneficiary</button>
+      <button class="btn btn-primary no-print" onclick="openAdd()">+ Add Beneficiary</button>
     </header>
 
     <div class="content">
@@ -140,9 +179,18 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       </div>
 
       <div id="tab-cards" class="tab-section" style="display:none">
-        <div class="no-print" style="padding:20px">
-            <select id="print-filter" onchange="renderCards()" style="padding:10px"><option value="">Select Village</option></select>
-            <button class="btn btn-primary" onclick="window.print()">Print Batch (6/page)</button>
+        <div class="no-print" style="padding:20px; background: #fff; margin: 20px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
+            <div>
+                <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">1. Select Village</label>
+                <select id="print-filter" onchange="renderCards()" style="padding:10px"><option value="">Select Village</option></select>
+            </div>
+            <div>
+                <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">2. Distribution Date</label>
+                <input type="date" id="print-date" onchange="renderCards()" style="padding:8px; border: 1px solid var(--border); border-radius: 5px;">
+            </div>
+            <div style="margin-left: auto; align-self: flex-end;">
+                <button class="btn btn-primary" onclick="window.print()">Print Cards (6 per page)</button>
+            </div>
         </div>
         <div id="cards-container"></div>
       </div>
@@ -249,27 +297,36 @@ function renderTable() {
             <td class="urdu-field">${d.caste||'—'}</td>
             <td class="urdu-field">${d.village}</td>
             <td>
-                <button class="btn btn-sm" onclick="openEdit('${id}')" style="padding: 5px 10px;">Edit</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteRecord('${id}')" style="padding: 5px 10px;">Del</button>
+                <button class="btn btn-sm" onclick="openEdit('${id}')">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteRecord('${id}')">Del</button>
             </td>
         </tr>`).join('');
 }
 
 function renderCards() {
     const v = document.getElementById('print-filter').value;
+    const dDate = document.getElementById('print-date').value || '__________';
     const arr = v ? Object.values(data).filter(d => d.village === v) : [];
     const pages = []; for(let i=0; i<arr.length; i+=6) pages.push(arr.slice(i, i+6));
+    
     document.getElementById('cards-container').innerHTML = pages.map(p => `
         <div class="print-grid">${p.map(d => `
             <div class="bcard">
-                <div class="bcard-head"><h4 style="font-family:Amiri">UNITY WELFARE SOCIETY</h4><p>Food Distribution Card</p></div>
+                <div class="bcard-head">
+                    <h4 style="font-family:Amiri; font-size: 20px; letter-spacing: 1px;">UNITY WELFARE SOCIETY</h4>
+                    <p style="font-size: 9px; margin-top: 2px; font-weight: bold; opacity: 0.8;">FOOD PACK DISTRIBUTION CARD</p>
+                </div>
                 <div class="bcard-body">
                     <div class="bcard-row"><span>NAME</span><span class="urdu-field">${d.name}</span></div>
                     <div class="bcard-row"><span>FATHER</span><span class="urdu-field">${d.father}</span></div>
-                    <div class="bcard-row"><span>VILLAGE</span><span class="urdu-field">${d.village}</span></div>
-                    <div class="bcard-row"><span>CASTE</span><span class="urdu-field">${d.caste||'—'}</span></div>
+                    <div class="bcard-row"><span>VILLAGE</span><span class="urdu-field" style="font-size: 1.1rem !important;">${d.village}</span></div>
+                    <div class="bcard-row"><span>CASTE</span><span class="urdu-field" style="font-size: 1.1rem !important;">${d.caste||'—'}</span></div>
+                    <div class="bcard-row"><span>DATE</span><span style="font-weight: bold; color: #000;">${dDate}</span></div>
                 </div>
-                <div class="bcard-foot"><span style="font-family:Amiri; font-weight:700">${d.cardNo}</span><span>${d.category}</span></div>
+                <div class="bcard-foot">
+                    <span style="font-family:Amiri; font-weight:700; font-size: 16px;">${d.cardNo}</span>
+                    <span style="font-size: 11px; font-weight: 800; text-transform: uppercase;">${d.category}</span>
+                </div>
             </div>`).join('')}</div>`).join('');
 }
 
