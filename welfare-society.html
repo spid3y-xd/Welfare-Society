@@ -55,8 +55,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 /* UI COMPONENTS */
 .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin:20px;overflow:hidden;box-shadow: 0 2px 5px rgba(0,0,0,0.05)}
 .card-header{padding:15px 20px; background:var(--blue-pale); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;padding:20px}
-.stat-box{background:#fff;padding:20px;border-radius:12px;border:1px solid var(--border);border-left:5px solid var(--blue-primary)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:15px;padding:20px}
+.stat-box{background:#fff;padding:20px;border-radius:12px;border:1px solid var(--border);border-left:5px solid var(--blue-primary); display: flex; flex-direction: column; gap: 5px;}
+.stat-box .val { font-size: 24px; font-weight: 700; color: var(--blue-navy); }
+.stat-box .lbl { font-size: 11px; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+
 .data-table{width:100%;border-collapse:collapse}
 .data-table th{text-align:left;padding:12px 20px;background:#f8fafc;font-size:11px;color:var(--text-light);text-transform:uppercase}
 .data-table td{padding:12px 20px;border-bottom:1px solid #f1f5f9; vertical-align: middle;}
@@ -66,41 +69,43 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     display: grid; 
     grid-template-columns: 1fr 1fr; 
     grid-template-rows: repeat(3, 1fr); 
-    gap: 15px; 
-    padding: 10px; 
-    width: 210mm; /* A4 Width */
-    height: 297mm; /* A4 Height */
+    gap: 20px; 
+    padding: 10mm; /* Added physical margins */
+    width: 210mm; 
+    height: 297mm; 
     margin: 0 auto;
+    page-break-after: always;
 }
 .bcard { 
-    border: 2px solid var(--blue-navy); 
-    outline: 4px solid var(--blue-navy);
-    outline-offset: -10px;
-    border-radius: 8px; 
+    border: 1px solid var(--blue-navy); 
+    outline: 3px solid var(--blue-navy);
+    outline-offset: -8px;
+    border-radius: 4px; 
     display: flex; 
     flex-direction: column; 
     overflow: hidden; 
     background:#fff;
     position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 .bcard-head { 
     background: var(--blue-navy); 
     color: #fff; 
-    padding: 15px 10px; 
+    padding: 12px 10px; 
     text-align: center; 
 }
 .bcard-body { 
-    padding: 20px 25px; 
+    padding: 15px 20px; 
     flex: 1; 
-    background-image: linear-gradient(var(--blue-pale) 1px, transparent 1px);
-    background-size: 100% 30px;
+    background-image: radial-gradient(var(--blue-light) 0.5px, transparent 0.5px);
+    background-size: 15px 15px;
 }
-.bcard-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #ddd; }
-.bcard-row span:first-child { font-weight: bold; font-size: 10px; color: var(--blue-navy); }
+.bcard-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #eee; }
+.bcard-row span:first-child { font-weight: 800; font-size: 9px; color: var(--blue-navy); text-transform: uppercase; }
 .bcard-foot { 
     background: var(--blue-navy); 
     color: #fff;
-    padding: 8px 15px; 
+    padding: 6px 15px; 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
@@ -110,7 +115,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:200}
 .modal-overlay.open{display:flex}
 .modal{background:#fff;padding:30px;border-radius:15px;width:500px;max-width:90%}
-.btn{padding:10px 20px;border-radius:8px;cursor:pointer;border:1px solid var(--border);font-weight:600}
+.btn{padding:10px 20px;border-radius:8px;cursor:pointer;border:1px solid var(--border);font-weight:600; font-size: 13px;}
 .btn-primary{background:var(--blue-primary);color:#fff;border:none}
 .btn-danger{color:#d32f2f; background:#fff5f5}
 
@@ -121,13 +126,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     .main { margin-left: 0 !important; }
     .tab-section { display: none !important; }
     #tab-cards { display: block !important; }
-    .print-grid { page-break-after: always; padding: 0; }
+    .print-grid { margin: 0; padding: 10mm; }
 }
 </style>
 </head>
 <body>
 
-<div id="loading-overlay"><div style="color:#fff">Syncing Unity Welfare System...</div></div>
+<div id="loading-overlay"><div style="color:#fff">Updating UWS Portal...</div></div>
 
 <div id="login-screen" style="display:none; align-items:center; justify-content:center; min-height:100vh; background:var(--blue-dark)">
   <div style="background:#fff; padding:40px; border-radius:15px; width:350px">
@@ -181,11 +186,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div id="tab-cards" class="tab-section" style="display:none">
         <div class="no-print" style="padding:20px; background: #fff; margin: 20px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 15px;">
             <div>
-                <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">1. Select Village</label>
-                <select id="print-filter" onchange="renderCards()" style="padding:10px"><option value="">Select Village</option></select>
+                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 5px; color: var(--blue-navy);">1. VILLAGE</label>
+                <select id="print-filter" onchange="renderCards()" style="padding:10px; border-radius: 5px;"><option value="">Select Village</option></select>
             </div>
             <div>
-                <label style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">2. Distribution Date</label>
+                <label style="font-size: 11px; font-weight: bold; display: block; margin-bottom: 5px; color: var(--blue-navy);">2. DISTRIBUTION DATE</label>
                 <input type="date" id="print-date" onchange="renderCards()" style="padding:8px; border: 1px solid var(--border); border-radius: 5px;">
             </div>
             <div style="margin-left: auto; align-self: flex-end;">
@@ -271,10 +276,16 @@ function refreshAll() { renderDashboard(); renderTable(); renderCards(); }
 
 function renderDashboard() {
     const arr = Object.values(data);
+    const vCount = villages.length;
+    const zCount = arr.filter(x=>x.category==='Zakat').length;
+    const sCount = arr.filter(x=>x.category==='Sadaqa').length;
+    
     document.getElementById('stats-summary').innerHTML = `
-        <div class="stat-box"><div>Total Families</div><div style="font-size:24px; font-weight:700">${arr.length}</div></div>
-        <div class="stat-box"><div>Zakat</div><div style="font-size:24px; font-weight:700">${arr.filter(x=>x.category==='Zakat').length}</div></div>
-        <div class="stat-box"><div>Sadaqa</div><div style="font-size:24px; font-weight:700">${arr.filter(x=>x.category==='Sadaqa').length}</div></div>`;
+        <div class="stat-box"><span class="lbl">Total Families</span><span class="val">${arr.length}</span></div>
+        <div class="stat-box"><span class="lbl">Registered Villages</span><span class="val">${vCount}</span></div>
+        <div class="stat-box"><span class="lbl">Zakat Beneficiaries</span><span class="val">${zCount}</span></div>
+        <div class="stat-box"><span class="lbl">Sadaqa Beneficiaries</span><span class="val">${sCount}</span></div>
+    `;
     
     document.getElementById('dash-village-table').innerHTML = villages.map(v => {
         const vd = arr.filter(x => x.village === v);
@@ -313,19 +324,20 @@ function renderCards() {
         <div class="print-grid">${p.map(d => `
             <div class="bcard">
                 <div class="bcard-head">
-                    <h4 style="font-family:Amiri; font-size: 20px; letter-spacing: 1px;">UNITY WELFARE SOCIETY</h4>
-                    <p style="font-size: 9px; margin-top: 2px; font-weight: bold; opacity: 0.8;">FOOD PACK DISTRIBUTION CARD</p>
+                    <h4 style="font-family:Amiri; font-size: 19px; letter-spacing: 0.5px; text-transform: uppercase;">UNITY WELFARE SOCIETY</h4>
+                    <p style="font-size: 8px; margin-top: 1px; font-weight: bold; opacity: 0.7;">REGISTRATION CARD FOR FOOD DISTRIBUTION</p>
                 </div>
                 <div class="bcard-body">
                     <div class="bcard-row"><span>NAME</span><span class="urdu-field">${d.name}</span></div>
                     <div class="bcard-row"><span>FATHER</span><span class="urdu-field">${d.father}</span></div>
-                    <div class="bcard-row"><span>VILLAGE</span><span class="urdu-field" style="font-size: 1.1rem !important;">${d.village}</span></div>
-                    <div class="bcard-row"><span>CASTE</span><span class="urdu-field" style="font-size: 1.1rem !important;">${d.caste||'—'}</span></div>
-                    <div class="bcard-row"><span>DATE</span><span style="font-weight: bold; color: #000;">${dDate}</span></div>
+                    <div class="bcard-row"><span>VILLAGE</span><span class="urdu-field" style="font-size: 1rem !important;">${d.village}</span></div>
+                    <div class="bcard-row"><span>CASTE</span><span class="urdu-field" style="font-size: 1rem !important;">${d.caste||'—'}</span></div>
+                    <div class="bcard-row"><span>CONTACT</span><span style="font-weight: 700; color: #000;">_________________</span></div>
+                    <div class="bcard-row"><span>DIST. DATE</span><span style="font-weight: 800; color: #000; font-size: 11px;">${dDate}</span></div>
                 </div>
                 <div class="bcard-foot">
-                    <span style="font-family:Amiri; font-weight:700; font-size: 16px;">${d.cardNo}</span>
-                    <span style="font-size: 11px; font-weight: 800; text-transform: uppercase;">${d.category}</span>
+                    <span style="font-family:Amiri; font-weight:700; font-size: 15px;"># ${d.cardNo}</span>
+                    <span style="font-size: 11px; font-weight: 900; background: #fff; color: var(--blue-navy); padding: 1px 8px; border-radius: 3px;">${d.category}</span>
                 </div>
             </div>`).join('')}</div>`).join('');
 }
