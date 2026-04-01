@@ -15,7 +15,6 @@
   import { getDatabase, ref, onValue, push, set, update, remove }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // YOUR FIREBASE CONFIG (Kept from your original file)
   const firebaseConfig = {
     apiKey:            "AIzaSyDgj2a6MK9iEXlJ7hvJYNVxrOTneQjkmHM",
     authDomain:        "welfare-society-f517a.firebaseapp.com",
@@ -46,126 +45,107 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
 
-/* URDU STYLING */
 .urdu-field {
   font-family: 'Jameel Noori Nastaleeq', 'Amiri', serif !important;
-  font-size: 1.25rem !important;
-  line-height: 1.8;
+  font-size: 1.3rem !important;
+  line-height: 1.6;
   direction: rtl;
   text-align: right;
 }
 
-/* LOADING */
-#loading-overlay{position:fixed;inset:0;background:var(--blue-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
+/* LOADING & LOGIN */
+#loading-overlay{position:fixed;inset:0;background:var(--blue-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
 #loading-overlay .spin{font-size:46px;animation:spin 2s linear infinite;margin-bottom:14px;color:#fff}
-#loading-overlay p{color:rgba(255,255,255,.5);font-size:13px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* LOGIN */
 #login-screen{display:none;align-items:center;justify-content:center;min-height:100vh;background:var(--blue-dark)}
-.login-box{background:#fff;border-radius:18px;padding:36px 40px;width:360px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.login-box{background:#fff;border-radius:18px;padding:36px 40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
 .login-logo{text-align:center;margin-bottom:28px}
-.login-logo .icon{width:56px;height:56px;border-radius:50%;background:var(--blue-light);display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:12px;color:var(--blue-primary)}
-.login-logo h2{font-family:'Amiri',serif;font-size:22px;color:var(--blue-dark);font-weight:700}
-.login-logo p{font-size:12px;color:var(--text-muted);margin-top:3px}
-.login-box label{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:5px}
-.login-box input{width:100%;border:1px solid var(--border);border-radius:var(--radius);padding:10px 13px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s;margin-bottom:14px}
-.login-box input:focus{border-color:var(--blue-primary);box-shadow:0 0 0 3px rgba(24,95,165,.08)}
-.login-error{background:#fcebeb;color:#a32d2d;border-radius:var(--radius);padding:9px 13px;font-size:12px;margin-bottom:14px;display:none}
-.login-btn{width:100%;background:var(--blue-primary);color:#fff;border:none;border-radius:var(--radius);padding:11px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px}
-.login-btn:hover{background:var(--blue-dark)}
+.login-btn{width:100%;background:var(--blue-primary);color:#fff;border:none;border-radius:var(--radius);padding:11px;font-weight:600;cursor:pointer}
 
-/* SIDEBAR */
-.sidebar{width:220px;background:var(--blue-dark);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:50}
-.sidebar-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
-.sidebar-logo .icon{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:9px;color:#fff}
-.org-name{font-family:'Amiri',serif;font-size:17px;color:#fff;font-weight:700;line-height:1.3}
-.org-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
-.nav-links{padding:12px 10px;flex:1}
-.nav-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:rgba(255,255,255,.6);cursor:pointer;font-size:13px;font-weight:500;margin-bottom:2px;transition:all .15s;border:none;background:none;width:100%;text-align:left}
-.nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
-.nav-link.active{background:rgba(255,255,255,.15);color:#fff}
-.sidebar-user{padding:14px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
-.user-avatar{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:600}
-.user-info{flex:1;overflow:hidden}
-.user-email{font-size:11px;color:rgba(255,255,255,.5);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.logout-btn{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:16px;padding:2px}
-.logout-btn:hover{color:#fff}
-
-/* MAIN */
+/* SIDEBAR & MAIN */
+.sidebar{width:220px;background:var(--blue-dark);position:fixed;top:0;left:0;bottom:0;z-index:50}
+.sidebar-logo{padding:22px 20px;border-bottom:1px solid rgba(255,255,255,.08);color:#fff}
+.org-name{font-family:'Amiri',serif;font-size:18px;font-weight:700}
+.nav-link{display:block;padding:12px 20px;color:rgba(255,255,255,.6);cursor:pointer;border:none;background:none;width:100%;text-align:left}
+.nav-link.active{background:rgba(255,255,255,.1);color:#fff}
 .main{margin-left:220px;flex:1}
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
-.topbar-title{font-size:16px;font-weight:600}
-.topbar-sub{font-size:12px;color:var(--text-muted);margin-top:1px}
-.content{padding:24px 28px}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
 
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:22px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-sm);border-left:4px solid var(--blue-primary)}
-.stat-card .lbl{font-size:11px;font-weight:600;color:var(--text-light);letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px}
-.stat-card .val{font-size:28px;font-weight:600;line-height:1;color:var(--blue-dark)}
-
-/* CARD UI */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:18px}
-.card-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--blue-pale)}
-.card-header h3{font-size:14px;font-weight:600;color:var(--blue-navy)}
-
-/* TOOLBAR */
-.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid var(--border)}
-.sw{position:relative;flex:1;min-width:200px}
-.sw input{padding-left:34px;width:100%}
-input,select{border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;font-family:inherit;background:var(--surface);color:var(--text);outline:none}
-input:focus,select:focus{border-color:var(--blue-primary);box-shadow:0 0 0 3px rgba(24,95,165,.08)}
-
-/* BUTTONS */
-.btn{padding:8px 16px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:var(--surface);color:var(--text);display:inline-flex;align-items:center;gap:6px;transition:all .15s}
-.btn:hover{background:var(--blue-light);border-color:var(--blue-primary);color:var(--blue-navy)}
-.btn-primary{background:var(--blue-primary);color:#fff;border-color:var(--blue-primary)}
-.btn-primary:hover{background:var(--blue-dark);border-color:var(--blue-dark);color:#fff}
-.btn-danger{background:#fcebeb;color:#a32d2d;border-color:#f0b8b8}
-
-/* TABLE */
+/* TABLES */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin:20px;overflow:hidden}
 .data-table{width:100%;border-collapse:collapse}
-.data-table th{padding:10px 16px;font-size:11px;font-weight:600;color:var(--text-light);text-transform:uppercase;text-align:left;background:#fafcfb;border-bottom:1px solid var(--border)}
-.data-table td{padding:11px 16px;border-bottom:1px solid #f0f5f2;font-size:13px}
-.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.bz{background:var(--blue-light);color:var(--blue-navy)}
+.data-table th{text-align:left;padding:12px 16px;background:#f8fafc;font-size:11px;text-transform:uppercase;color:var(--text-light)}
+.data-table td{padding:12px 16px;border-bottom:1px solid #f1f5f9}
 
-/* PRINT CARDS */
-.print-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;page-break-after:always}
-.bcard{background:#fff;border:2px solid var(--blue-navy);border-radius:10px;overflow:hidden}
-.bcard-head{background:var(--blue-navy);padding:11px 15px;display:flex;align-items:center;gap:10px;color:#fff}
-.bcard-head h4{font-size:12px;font-weight:700;margin:0}
-.bcard-head p{font-size:10px;color:rgba(255,255,255,.6);margin:1px 0 0;font-style:italic}
-.bcard-body{padding:9px 13px;background:var(--blue-pale)}
-.bcard-row{display:flex;font-size:12px;padding:3.5px 0;border-bottom:.5px solid var(--border);align-items:center}
-.bcard-row .l{font-weight:600;color:var(--blue-navy);width:80px;flex-shrink:0;font-size:11px}
-.bcard-row .v{color:#2a3a2e;flex:1}
-.bcard-foot{background:#fff;padding:7px 13px;display:flex;align-items:center;justify-content:space-between}
-.bcard-no{font-size:13px;font-weight:700;color:var(--blue-navy);font-family:'Amiri',serif}
+/* PUNCHY PRINT CARDS (6 per A4) */
+.print-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 15px;
+    padding: 10px;
+    height: 100%;
+}
+.bcard {
+    border: 3px solid var(--blue-navy);
+    border-radius: 12px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    height: 260px; /* Precise height for 3 rows */
+    overflow: hidden;
+}
+.bcard-head {
+    background: var(--blue-navy);
+    color: #fff;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 2px solid var(--blue-navy);
+}
+.bcard-head h4 { font-family: 'Amiri', serif; font-size: 18px; letter-spacing: 1px; margin: 0; }
+.bcard-head p { font-size: 10px; opacity: 0.8; margin-top: 2px; text-transform: uppercase; }
+.bcard-body {
+    padding: 10px 15px;
+    flex: 1;
+}
+.bcard-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px dashed #d1d9e0;
+}
+.bcard-row:last-child { border-bottom: none; }
+.bcard-row .l { font-weight: 700; color: var(--blue-navy); font-size: 11px; text-transform: uppercase; }
+.bcard-row .v { color: #000; }
+.bcard-foot {
+    background: var(--blue-pale);
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border);
+}
+.bcard-no { font-family: 'Amiri', serif; font-weight: 700; font-size: 16px; color: var(--blue-navy); }
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:200}
 .modal-overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:var(--radius-lg);padding:26px 28px;width:480px;max-width:95vw;border:1px solid var(--border)}
-.modal h3{font-size:16px;font-weight:600;color:var(--blue-dark);margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
-.fg{display:flex;flex-direction:column;gap:5px}
-.fg.full{grid-column:1/-1}
-.fg label{font-size:12px;font-weight:600;color:var(--text-muted)}
+.modal{background:#fff;padding:25px;border-radius:15px;width:450px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.fg.full{grid-column: span 2}
+.btn{padding:8px 15px;border-radius:8px;cursor:pointer;border:1px solid var(--border)}
+.btn-primary{background:var(--blue-primary);color:#fff}
+.btn-danger{background:#fff0f0;color:#d32f2f;border-color:#ffcdd2}
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--blue-dark);color:#fff;padding:11px 18px;border-radius:var(--radius);font-size:13px;font-weight:500;transform:translateY(100px);opacity:0;transition:all .3s;z-index:999}
-.toast.show{transform:translateY(0);opacity:1}
-
-@media print{
-  .sidebar,.topbar,.toolbar,.no-print,.modal-overlay,#loading-overlay{display:none!important}
-  .main{margin-left:0!important}
-  .content{padding:0!important}
-  .tab-section{display:none!important}
-  #tab-cards{display:block!important}
-  .print-grid{page-break-after:always;gap:10px}
-  .bcard{page-break-inside:avoid}
+@media print {
+    @page { size: A4; margin: 0.5cm; }
+    body { background: #fff; }
+    .sidebar, .topbar, .no-print, #loading-overlay { display: none !important; }
+    .main { margin-left: 0 !important; }
+    .tab-section { display: none !important; }
+    #tab-cards { display: block !important; }
+    .print-grid { page-break-after: always; }
 }
 </style>
 </head>
@@ -175,89 +155,80 @@ input:focus,select:focus{border-color:var(--blue-primary);box-shadow:0 0 0 3px r
 
 <div id="login-screen">
   <div class="login-box">
-    <div class="login-logo"><div class="icon">☪</div><h2>Unity Welfare Society</h2><p>Data Management Portal</p></div>
-    <label>Email Address</label><input type="email" id="login-email" placeholder="volunteer@example.com">
-    <label>Password</label><input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    <div class="login-error" id="login-error"></div>
-    <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-logo"><h2>Unity Welfare Society</h2><p>Data Portal</p></div>
+    <input type="email" id="login-email" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px">
+    <input type="password" id="login-pass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:15px">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
   </div>
 </div>
 
 <div id="app-shell" style="display:none">
 <div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-logo"><div class="icon">☪</div><div class="org-name">Unity Welfare<br>Society</div><div class="org-sub">Village Network</div></div>
-    <nav class="nav-links">
-      <button class="nav-link active" onclick="switchTab('dashboard')"><span>Dashboard</span></button>
-      <button class="nav-link" onclick="switchTab('beneficiaries')"><span>Beneficiaries</span></button>
-      <button class="nav-link" onclick="switchTab('cards')"><span>Print Cards</span></button>
-      <button class="nav-link" onclick="switchTab('villages')"><span>Villages</span></button>
+    <div class="sidebar-logo"><div class="org-name">Unity Welfare Society</div></div>
+    <nav>
+      <button class="nav-link active" onclick="switchTab('dashboard')">Dashboard</button>
+      <button class="nav-link" onclick="switchTab('beneficiaries')">Beneficiaries</button>
+      <button class="nav-link" onclick="switchTab('cards')">Print Cards</button>
     </nav>
-    <div class="sidebar-user">
-      <div class="user-avatar" id="user-avatar">U</div>
-      <div class="user-info"><div class="user-email" id="user-email-lbl">—</div></div>
-      <button class="logout-btn" onclick="doLogout()">⏻</button>
-    </div>
+    <div style="position:absolute; bottom:20px; left:20px"><button onclick="doLogout()" style="color:#fff; background:none; border:none; cursor:pointer">Logout ⏻</button></div>
   </aside>
 
   <div class="main">
     <div class="topbar">
-      <div><div class="topbar-title" id="page-title">Dashboard</div><div class="topbar-sub" id="page-sub">System Summary</div></div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-primary no-print" onclick="openAdd()">+ Add New Person</button>
-      </div>
+      <div id="page-title" style="font-weight:700; font-size:18px">Dashboard</div>
+      <button class="btn btn-primary" onclick="openAdd()">+ Add Person</button>
     </div>
 
     <div class="content">
-      <div id="tab-dashboard" class="tab-section active">
-        <div class="stats-grid" id="stats-grid"></div>
-        <div class="card"><div class="card-header"><h3>Village Breakdown</h3></div>
-          <table class="data-table"><thead><tr><th>Village</th><th>Total Records</th><th>Zakat</th><th>Sadaqa</th></tr></thead><tbody id="village-tbody"></tbody></table>
-        </div>
+      <div id="tab-dashboard" class="tab-section">
+        <div id="stats" style="display:flex; gap:20px; padding:20px"></div>
       </div>
 
       <div id="tab-beneficiaries" class="tab-section" style="display:none">
         <div class="card">
-          <div class="toolbar"><div class="sw"><input type="text" id="search-input" placeholder="Search by name, card, or village..." oninput="renderTable()"></div></div>
-          <table class="data-table"><thead><tr><th>Card No</th><th>Name</th><th>Father</th><th>Village</th><th>Caste</th><th>Actions</th></tr></thead><tbody id="table-body"></tbody></table>
+          <table class="data-table">
+            <thead><tr><th>Card #</th><th>Name</th><th>Father</th><th>Village</th><th>Actions</th></tr></thead>
+            <tbody id="table-body"></tbody>
+          </table>
         </div>
       </div>
 
       <div id="tab-cards" class="tab-section" style="display:none">
-        <div class="toolbar no-print"><select id="card-filter-village" onchange="renderCards()"><option value="">Select Village</option></select><button class="btn btn-primary" onclick="window.print()">Print Batch</button></div>
+        <div style="padding:20px" class="no-print">
+            <select id="card-filter" onchange="renderCards()" style="padding:10px; border-radius:5px">
+                <option value="">All Villages</option>
+            </select>
+            <button class="btn btn-primary" onclick="window.print()" style="margin-left:10px">Print Cards (6 per page)</button>
+        </div>
         <div id="cards-container"></div>
       </div>
-
-      <div id="tab-villages" class="tab-section" style="display:none">
-        <div class="card"><div class="card-header"><h3>Active Villages</h3><button class="btn btn-sm btn-primary" onclick="addVillage()">+ Add</button></div><div id="villages-list" style="padding:20px"></div></div>
-      </div>
     </div>
   </div>
 </div>
 </div>
 
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+<div class="modal-overlay" id="modal">
   <div class="modal">
-    <h3 id="modal-heading">Record Entry</h3>
+    <h3 id="modal-heading" style="margin-bottom:20px">Beneficiary Details</h3>
     <div class="form-grid">
-      <div class="fg"><label>Card No</label><input id="f-cardno"></div>
-      <div class="fg"><label>Village</label><select id="f-village"></select></div>
-      <div class="fg full"><label>Full Name (Urdu)</label><input id="f-name" class="urdu-field"></div>
-      <div class="fg full"><label>Father Name (Urdu)</label><input id="f-father" class="urdu-field"></div>
-      <div class="fg"><label>Caste (Urdu)</label><input id="f-caste" class="urdu-field"></div>
-      <div class="fg"><label>Category</label><select id="f-category"><option>Zakat</option><option>Sadaqa</option></select></div>
-      <div class="fg full"><label>Contact</label><input id="f-contact"></div>
+      <div class="fg"><label>Card No</label><input id="f-cardno" style="width:100%; padding:8px"></div>
+      <div class="fg"><label>Village</label><select id="f-village" style="width:100%; padding:8px"></select></div>
+      <div class="fg full"><label>Name (Urdu)</label><input id="f-name" class="urdu-field" style="width:100%; padding:5px"></div>
+      <div class="fg full"><label>Father (Urdu)</label><input id="f-father" class="urdu-field" style="width:100%; padding:5px"></div>
+      <div class="fg full"><label>Caste (Urdu)</label><input id="f-caste" class="urdu-field" style="width:100%; padding:5px"></div>
+      <div class="fg"><label>Category</label><select id="f-category" style="width:100%; padding:8px"><option>Zakat</option><option>Sadaqa</option></select></div>
     </div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn btn-primary" id="save-btn" onclick="saveRecord()">Save</button></div>
+    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveRecord()">Save</button>
+    </div>
   </div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-let data = {}, villages = [], editId = null, dataLoaded = false;
+let data = {}, villages = [], editId = null;
 
-// Initialize
 function waitFB(cb) { if (window._fb) cb(); else setTimeout(() => waitFB(cb), 100); }
 waitFB(() => {
   window._fb.onAuthStateChanged(window._fb.auth, user => {
@@ -265,7 +236,6 @@ waitFB(() => {
     if (user) {
       document.getElementById('app-shell').style.display='block';
       document.getElementById('login-screen').style.display='none';
-      document.getElementById('user-email-lbl').textContent = user.email;
       listenToData();
     } else {
       document.getElementById('app-shell').style.display='none';
@@ -278,28 +248,67 @@ function doLogin() {
   const e = document.getElementById('login-email').value, p = document.getElementById('login-pass').value;
   window._fb.signInWithEmailAndPassword(window._fb.auth, e, p).catch(err => alert(err.message));
 }
-
 function doLogout() { window._fb.signOut(window._fb.auth); }
 
 function listenToData() {
   const {db,ref,onValue} = window._fb;
   onValue(ref(db,'villages'), snap => {
-    villages = snap.exists() ? Object.values(snap.val()) : ['Chak 12','Village 1'];
-    populateSelects();
+    villages = snap.exists() ? Object.values(snap.val()) : ['Chak 12','Village A'];
+    const h = villages.map(v=>`<option value="${v}">${v}</option>`).join('');
+    document.getElementById('f-village').innerHTML = h;
+    document.getElementById('card-filter').innerHTML = '<option value="">All Villages</option>' + h;
   });
   onValue(ref(db,'beneficiaries'), snap => {
     data = snap.exists() ? snap.val() : {};
-    dataLoaded = true;
-    renderDashboard(); renderTable(); renderCards(); renderVillages();
+    renderDashboard(); renderTable(); renderCards();
   });
 }
 
-function rows() { return Object.entries(data).map(([id,v])=>({...v,_id:id})); }
+function renderDashboard() {
+  const arr = Object.values(data);
+  document.getElementById('stats').innerHTML = `
+    <div style="background:#fff; padding:20px; border-radius:10px; flex:1; border-left:5px solid var(--blue-primary)">
+        <div style="font-size:12px; color:gray">TOTAL FAMILIES</div>
+        <div style="font-size:24px; font-weight:700">${arr.length}</div>
+    </div>
+    <div style="background:#fff; padding:20px; border-radius:10px; flex:1; border-left:5px solid var(--blue-navy)">
+        <div style="font-size:12px; color:gray">VILLAGES</div>
+        <div style="font-size:24px; font-weight:700">${villages.length}</div>
+    </div>`;
+}
 
-function populateSelects() {
-  const h = villages.map(v=>`<option value="${v}">${v}</option>`).join('');
-  document.getElementById('f-village').innerHTML = h;
-  document.getElementById('card-filter-village').innerHTML = '<option value="">All Villages</option>' + h;
+function renderTable() {
+  const tb = document.getElementById('table-body');
+  tb.innerHTML = Object.entries(data).map(([id, d]) => `
+    <tr>
+      <td style="font-weight:700">${d.cardNo}</td>
+      <td class="urdu-field">${d.name}</td>
+      <td class="urdu-field">${d.father}</td>
+      <td>${d.village}</td>
+      <td>
+        <button class="btn btn-sm" onclick="openEdit('${id}')">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteRecord('${id}')">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderCards() {
+    const filter = document.getElementById('card-filter').value;
+    const arr = Object.values(data).filter(d => !filter || d.village === filter);
+    const pages = []; for(let i=0; i<arr.length; i+=6) pages.push(arr.slice(i,i+6));
+    
+    document.getElementById('cards-container').innerHTML = pages.map(p => `
+      <div class="print-grid">${p.map(d => `
+        <div class="bcard">
+          <div class="bcard-head"><h4>UNITY WELFARE SOCIETY</h4><p>Food Distribution Card</p></div>
+          <div class="bcard-body">
+            <div class="bcard-row"><span class="l">Name</span><span class="v urdu-field">${d.name}</span></div>
+            <div class="bcard-row"><span class="l">Father</span><span class="v urdu-field">${d.father}</span></div>
+            <div class="bcard-row"><span class="l">Village</span><span class="v">${d.village}</span></div>
+            <div class="bcard-row"><span class="l">Caste</span><span class="v urdu-field">${d.caste||'—'}</span></div>
+          </div>
+          <div class="bcard-foot"><span class="bcard-no">${d.cardNo}</span><span style="font-size:10px; font-weight:700">${d.category}</span></div>
+        </div>`).join('')}</div>`).join('');
 }
 
 function switchTab(t) {
@@ -309,89 +318,37 @@ function switchTab(t) {
   document.getElementById('page-title').textContent = t.charAt(0).toUpperCase() + t.slice(1);
 }
 
-function renderDashboard() {
-  const arr = rows();
-  document.getElementById('stats-grid').innerHTML = `
-    <div class="stat-card"><div class="lbl">Total Families</div><div class="val">${arr.length}</div></div>
-    <div class="stat-card"><div class="lbl">Villages Covered</div><div class="val">${villages.length}</div></div>`;
-  
-  document.getElementById('village-tbody').innerHTML = villages.map(v => {
-    const vd = arr.filter(d=>d.village===v);
-    return `<tr><td>${v}</td><td>${vd.length}</td><td>${vd.filter(d=>d.category==='Zakat').length}</td><td>${vd.filter(d=>d.category==='Sadaqa').length}</td></tr>`;
-  }).join('');
-}
-
-function renderTable() {
-  const q = document.getElementById('search-input').value.toLowerCase();
-  const arr = rows().filter(d => !q || `${d.name} ${d.cardNo} ${d.village}`.toLowerCase().includes(q));
-  document.getElementById('table-body').innerHTML = arr.map(d => `
-    <tr>
-      <td style="font-weight:700">${d.cardNo}</td>
-      <td class="urdu-field">${d.name}</td>
-      <td class="urdu-field">${d.father}</td>
-      <td>${d.village}</td>
-      <td class="urdu-field">${d.caste||'—'}</td>
-      <td><button class="btn btn-sm" onclick="openEdit('${d._id}')">Edit</button></td>
-    </tr>`).join('');
-}
-
-function renderCards() {
-  const v = document.getElementById('card-filter-village').value;
-  const arr = v ? rows().filter(d=>d.village===v) : rows();
-  const pages = []; for(let i=0; i<arr.length; i+=4) pages.push(arr.slice(i,i+4));
-  document.getElementById('cards-container').innerHTML = pages.map(p => `
-    <div class="print-grid">${p.map(d => `
-      <div class="bcard">
-        <div class="bcard-head"><h4>UNITY WELFARE SOCIETY</h4><p>Food Distribution</p></div>
-        <div class="bcard-body">
-          <div class="bcard-row"><span class="l">Name</span><span class="v urdu-field">${d.name}</span></div>
-          <div class="bcard-row"><span class="l">Father</span><span class="v urdu-field">${d.father}</span></div>
-          <div class="bcard-row"><span class="l">Village</span><span class="v">${d.village}</span></div>
-          <div class="bcard-row"><span class="l">Caste</span><span class="v urdu-field">${d.caste||''}</span></div>
-        </div>
-        <div class="bcard-foot"><span class="bcard-no">${d.cardNo}</span></div>
-      </div>`).join('')}</div>`).join('');
-}
-
-function renderVillages() {
-  document.getElementById('villages-list').innerHTML = villages.map(v => `<span class="badge bz" style="margin:5px; padding:10px">${v}</span>`).join('');
-}
-
-function openAdd() {
-  editId = null; closeModal();
-  document.getElementById('modal').classList.add('open');
-}
-
+function openAdd() { editId = null; document.getElementById('modal').classList.add('open'); }
 function openEdit(id) {
-  editId = id; const d = data[id];
-  document.getElementById('f-cardno').value = d.cardNo;
-  document.getElementById('f-name').value = d.name;
-  document.getElementById('f-father').value = d.father;
-  document.getElementById('f-caste').value = d.caste||'';
-  document.getElementById('f-village').value = d.village;
-  document.getElementById('modal').classList.add('open');
+    editId = id; const d = data[id];
+    document.getElementById('f-cardno').value = d.cardNo;
+    document.getElementById('f-name').value = d.name;
+    document.getElementById('f-father').value = d.father;
+    document.getElementById('f-caste').value = d.caste||'';
+    document.getElementById('f-village').value = d.village;
+    document.getElementById('f-category').value = d.category;
+    document.getElementById('modal').classList.add('open');
 }
-
 function closeModal() { document.getElementById('modal').classList.remove('open'); }
 
 function saveRecord() {
-  const rec = {
-    cardNo: document.getElementById('f-cardno').value,
-    name: document.getElementById('f-name').value,
-    father: document.getElementById('f-father').value,
-    caste: document.getElementById('f-caste').value,
-    village: document.getElementById('f-village').value,
-    category: document.getElementById('f-category').value,
-    contact: document.getElementById('f-contact').value
-  };
-  const {db,ref,push,update} = window._fb;
-  (editId ? update(ref(db,'beneficiaries/'+editId), rec) : push(ref(db,'beneficiaries'), rec))
-  .then(() => { toast('Saved Successfully'); closeModal(); });
+    const rec = {
+        cardNo: document.getElementById('f-cardno').value,
+        name: document.getElementById('f-name').value,
+        father: document.getElementById('f-father').value,
+        caste: document.getElementById('f-caste').value,
+        village: document.getElementById('f-village').value,
+        category: document.getElementById('f-category').value
+    };
+    const {db,ref,push,update} = window._fb;
+    (editId ? update(ref(db,'beneficiaries/'+editId), rec) : push(ref(db,'beneficiaries'), rec))
+    .then(() => closeModal());
 }
 
-function toast(m) {
-  const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+function deleteRecord(id) {
+    if(confirm('Are you sure you want to delete this beneficiary?')) {
+        window._fb.remove(window._fb.ref(window._fb.db, 'beneficiaries/'+id));
+    }
 }
 </script>
 </body>
