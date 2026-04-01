@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unity Welfare Society — Food Pack System</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nafeespp/jameel-noori-nastaleeq-webfont@master/style.css">
 
 <script type="module">
@@ -25,12 +24,10 @@
     appId:             "1:57174497928:web:2995ebe9a1a8a3b1315d3d"
   };
 
-  const app  = initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db   = getDatabase(app);
-
-  window._fb = { auth, db, ref, onValue, push, set, update, remove,
-                 signInWithEmailAndPassword, signOut, onAuthStateChanged };
+  const db = getDatabase(app);
+  window._fb = { auth, db, ref, onValue, push, set, update, remove, signInWithEmailAndPassword, signOut, onAuthStateChanged };
 </script>
 
 <style>
@@ -40,188 +37,140 @@
   --bg:#f4f7f6; --surface:#ffffff; --border:#d4dde4;
   --text:#1a202c; --text-muted:#5a6a7a; --text-light:#8aa0b0;
   --radius:10px; --radius-lg:14px;
-  --shadow-sm:0 1px 3px rgba(0,51,102,.1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
 
-.urdu-field {
-  font-family: 'Jameel Noori Nastaleeq', 'Amiri', serif !important;
-  font-size: 1.3rem !important;
-  line-height: 1.6;
-  direction: rtl;
-  text-align: right;
-}
+.urdu-field { font-family: 'Jameel Noori Nastaleeq', serif !important; font-size: 1.35rem !important; direction: rtl; text-align: right; }
 
-/* LOADING & LOGIN */
+/* LAYOUT */
 #loading-overlay{position:fixed;inset:0;background:var(--blue-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}
-#loading-overlay .spin{font-size:46px;animation:spin 2s linear infinite;margin-bottom:14px;color:#fff}
-@keyframes spin{to{transform:rotate(360deg)}}
-#login-screen{display:none;align-items:center;justify-content:center;min-height:100vh;background:var(--blue-dark)}
-.login-box{background:#fff;border-radius:18px;padding:36px 40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.login-logo{text-align:center;margin-bottom:28px}
-.login-btn{width:100%;background:var(--blue-primary);color:#fff;border:none;border-radius:var(--radius);padding:11px;font-weight:600;cursor:pointer}
-
-/* SIDEBAR & MAIN */
-.sidebar{width:220px;background:var(--blue-dark);position:fixed;top:0;left:0;bottom:0;z-index:50}
-.sidebar-logo{padding:22px 20px;border-bottom:1px solid rgba(255,255,255,.08);color:#fff}
-.org-name{font-family:'Amiri',serif;font-size:18px;font-weight:700}
-.nav-link{display:block;padding:12px 20px;color:rgba(255,255,255,.6);cursor:pointer;border:none;background:none;width:100%;text-align:left}
-.nav-link.active{background:rgba(255,255,255,.1);color:#fff}
+.sidebar{width:220px;background:var(--blue-dark);position:fixed;top:0;left:0;bottom:0;z-index:50;color:#fff}
+.sidebar-logo{padding:25px 20px; border-bottom:1px solid rgba(255,255,255,0.1)}
+.nav-link{display:block;padding:12px 20px;color:rgba(255,255,255,0.6);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-weight:500}
+.nav-link.active{background:rgba(255,255,255,0.1);color:#fff}
 .main{margin-left:220px;flex:1}
-.topbar{background:#fff;border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:15px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:40}
 
-/* TABLES */
-.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin:20px;overflow:hidden}
+/* UI COMPONENTS */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin:20px;overflow:hidden;box-shadow: 0 2px 5px rgba(0,0,0,0.05)}
+.card-header{padding:15px 20px; background:var(--blue-pale); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;padding:20px}
+.stat-box{background:#fff;padding:20px;border-radius:12px;border-left:5px solid var(--blue-primary);border:1px solid var(--border);border-left:5px solid var(--blue-primary)}
 .data-table{width:100%;border-collapse:collapse}
-.data-table th{text-align:left;padding:12px 16px;background:#f8fafc;font-size:11px;text-transform:uppercase;color:var(--text-light)}
-.data-table td{padding:12px 16px;border-bottom:1px solid #f1f5f9}
+.data-table th{text-align:left;padding:12px 20px;background:#f8fafc;font-size:11px;color:var(--text-light);text-transform:uppercase}
+.data-table td{padding:12px 20px;border-bottom:1px solid #f1f5f9}
 
-/* PUNCHY PRINT CARDS (6 per A4) */
-.print-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 15px;
-    padding: 10px;
-    height: 100%;
-}
-.bcard {
-    border: 3px solid var(--blue-navy);
-    border-radius: 12px;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    height: 260px; /* Precise height for 3 rows */
-    overflow: hidden;
-}
-.bcard-head {
-    background: var(--blue-navy);
-    color: #fff;
-    padding: 12px;
-    text-align: center;
-    border-bottom: 2px solid var(--blue-navy);
-}
-.bcard-head h4 { font-family: 'Amiri', serif; font-size: 18px; letter-spacing: 1px; margin: 0; }
-.bcard-head p { font-size: 10px; opacity: 0.8; margin-top: 2px; text-transform: uppercase; }
-.bcard-body {
-    padding: 10px 15px;
-    flex: 1;
-}
-.bcard-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px dashed #d1d9e0;
-}
-.bcard-row:last-child { border-bottom: none; }
-.bcard-row .l { font-weight: 700; color: var(--blue-navy); font-size: 11px; text-transform: uppercase; }
-.bcard-row .v { color: #000; }
-.bcard-foot {
-    background: var(--blue-pale);
-    padding: 8px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--border);
-}
-.bcard-no { font-family: 'Amiri', serif; font-weight: 700; font-size: 16px; color: var(--blue-navy); }
+/* PRINT CARDS - 6 Per Page */
+.print-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); gap: 12px; padding: 10px; height: 100%; }
+.bcard { border: 3px solid var(--blue-navy); border-radius: 12px; height: 275px; display: flex; flex-direction: column; overflow: hidden; background:#fff; }
+.bcard-head { background: var(--blue-navy); color: #fff; padding: 10px; text-align: center; }
+.bcard-body { padding: 12px; flex: 1; }
+.bcard-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #eee; }
+.bcard-foot { background: var(--blue-pale); padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); }
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:200}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:200}
 .modal-overlay.open{display:flex}
-.modal{background:#fff;padding:25px;border-radius:15px;width:450px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.fg.full{grid-column: span 2}
-.btn{padding:8px 15px;border-radius:8px;cursor:pointer;border:1px solid var(--border)}
-.btn-primary{background:var(--blue-primary);color:#fff}
-.btn-danger{background:#fff0f0;color:#d32f2f;border-color:#ffcdd2}
+.modal{background:#fff;padding:30px;border-radius:15px;width:500px;max-width:90%}
+.btn{padding:10px 20px;border-radius:8px;cursor:pointer;border:1px solid var(--border);font-weight:600}
+.btn-primary{background:var(--blue-primary);color:#fff;border:none}
+.btn-danger{color:#d32f2f; background:#fff5f5}
 
 @media print {
     @page { size: A4; margin: 0.5cm; }
-    body { background: #fff; }
     .sidebar, .topbar, .no-print, #loading-overlay { display: none !important; }
     .main { margin-left: 0 !important; }
     .tab-section { display: none !important; }
     #tab-cards { display: block !important; }
-    .print-grid { page-break-after: always; }
 }
 </style>
 </head>
 <body>
 
-<div id="loading-overlay"><div class="spin">☪</div><p>Syncing UWS Database…</p></div>
+<div id="loading-overlay"><div style="color:#fff">Loading Unity Welfare System...</div></div>
 
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo"><h2>Unity Welfare Society</h2><p>Data Portal</p></div>
+<div id="login-screen" style="display:none; align-items:center; justify-content:center; min-height:100vh; background:var(--blue-dark)">
+  <div style="background:#fff; padding:40px; border-radius:15px; width:350px">
+    <h2 style="margin-bottom:20px; text-align:center">UWS Portal</h2>
     <input type="email" id="login-email" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px">
-    <input type="password" id="login-pass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:15px">
-    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <input type="password" id="login-pass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:20px">
+    <button class="btn btn-primary" style="width:100%" onclick="doLogin()">Sign In</button>
   </div>
 </div>
 
 <div id="app-shell" style="display:none">
-<div class="layout">
   <aside class="sidebar">
-    <div class="sidebar-logo"><div class="org-name">Unity Welfare Society</div></div>
-    <nav>
+    <div class="sidebar-logo"><h2 style="font-family:Amiri">UWS Pakistan</h2></div>
+    <nav style="margin-top:20px">
       <button class="nav-link active" onclick="switchTab('dashboard')">Dashboard</button>
       <button class="nav-link" onclick="switchTab('beneficiaries')">Beneficiaries</button>
       <button class="nav-link" onclick="switchTab('cards')">Print Cards</button>
+      <button class="nav-link" onclick="switchTab('villages')">Manage Villages</button>
     </nav>
-    <div style="position:absolute; bottom:20px; left:20px"><button onclick="doLogout()" style="color:#fff; background:none; border:none; cursor:pointer">Logout ⏻</button></div>
+    <button onclick="doLogout()" style="position:absolute; bottom:20px; left:20px; color:#fff; background:none; border:none; cursor:pointer">Logout ⏻</button>
   </aside>
 
-  <div class="main">
-    <div class="topbar">
-      <div id="page-title" style="font-weight:700; font-size:18px">Dashboard</div>
-      <button class="btn btn-primary" onclick="openAdd()">+ Add Person</button>
-    </div>
+  <main class="main">
+    <header class="topbar">
+      <h1 id="page-title" style="font-size:20px">Dashboard</h1>
+      <button class="btn btn-primary" onclick="openAdd()">+ Add Beneficiary</button>
+    </header>
 
     <div class="content">
       <div id="tab-dashboard" class="tab-section">
-        <div id="stats" style="display:flex; gap:20px; padding:20px"></div>
+        <div class="stats-grid" id="stats-summary"></div>
+        <div class="card">
+            <div class="card-header"><h3>Village Statistics</h3></div>
+            <table class="data-table"><thead><tr><th>Village</th><th>Total</th><th>Zakat</th><th>Sadaqa</th></tr></thead><tbody id="dash-village-table"></tbody></table>
+        </div>
       </div>
 
       <div id="tab-beneficiaries" class="tab-section" style="display:none">
         <div class="card">
+          <div style="padding:15px; border-bottom:1px solid #eee; display:flex; gap:10px">
+            <input type="text" id="search-input" placeholder="Search name or card..." style="flex:1; padding:8px" oninput="renderTable()">
+            <select id="filter-village" onchange="renderTable()" style="padding:8px"><option value="">All Villages</option></select>
+          </div>
           <table class="data-table">
             <thead><tr><th>Card #</th><th>Name</th><th>Father</th><th>Village</th><th>Actions</th></tr></thead>
-            <tbody id="table-body"></tbody>
+            <tbody id="main-table-body"></tbody>
           </table>
         </div>
       </div>
 
       <div id="tab-cards" class="tab-section" style="display:none">
-        <div style="padding:20px" class="no-print">
-            <select id="card-filter" onchange="renderCards()" style="padding:10px; border-radius:5px">
-                <option value="">All Villages</option>
-            </select>
-            <button class="btn btn-primary" onclick="window.print()" style="margin-left:10px">Print Cards (6 per page)</button>
+        <div class="no-print" style="padding:20px">
+            <select id="print-filter" onchange="renderCards()" style="padding:10px"><option value="">Select Village</option></select>
+            <button class="btn btn-primary" onclick="window.print()">Print Batch (6/page)</button>
         </div>
         <div id="cards-container"></div>
       </div>
+
+      <div id="tab-villages" class="tab-section" style="display:none">
+        <div class="card">
+            <div class="card-header"><h3>Manage Villages</h3><button class="btn btn-sm btn-primary" onclick="addVillage()">+ Add Village</button></div>
+            <div id="village-list" style="padding:20px; display:flex; gap:10px; flex-wrap:wrap"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+  </main>
 </div>
 
 <div class="modal-overlay" id="modal">
   <div class="modal">
-    <h3 id="modal-heading" style="margin-bottom:20px">Beneficiary Details</h3>
-    <div class="form-grid">
-      <div class="fg"><label>Card No</label><input id="f-cardno" style="width:100%; padding:8px"></div>
-      <div class="fg"><label>Village</label><select id="f-village" style="width:100%; padding:8px"></select></div>
-      <div class="fg full"><label>Name (Urdu)</label><input id="f-name" class="urdu-field" style="width:100%; padding:5px"></div>
-      <div class="fg full"><label>Father (Urdu)</label><input id="f-father" class="urdu-field" style="width:100%; padding:5px"></div>
-      <div class="fg full"><label>Caste (Urdu)</label><input id="f-caste" class="urdu-field" style="width:100%; padding:5px"></div>
-      <div class="fg"><label>Category</label><select id="f-category" style="width:100%; padding:8px"><option>Zakat</option><option>Sadaqa</option></select></div>
+    <h3 style="margin-bottom:20px">Beneficiary Information</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px">
+      <div><label>Card No</label><input id="f-cardno" style="width:100%; padding:8px"></div>
+      <div><label>Village</label><select id="f-village" style="width:100%; padding:8px"></select></div>
+      <div style="grid-column: span 2"><label>Name (Urdu)</label><input id="f-name" class="urdu-field" style="width:100%; padding:5px"></div>
+      <div style="grid-column: span 2"><label>Father Name (Urdu)</label><input id="f-father" class="urdu-field" style="width:100%; padding:5px"></div>
+      <div style="grid-column: span 2"><label>Caste (Urdu)</label><input id="f-caste" class="urdu-field" style="width:100%; padding:5px"></div>
+      <div><label>Category</label><select id="f-category" style="width:100%; padding:8px"><option>Zakat</option><option>Sadaqa</option></select></div>
     </div>
-    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px">
+    <div style="margin-top:25px; display:flex; justify-content:flex-end; gap:10px">
       <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveRecord()">Save</button>
+      <button class="btn btn-primary" onclick="saveRecord()">Save Beneficiary</button>
     </div>
   </div>
 </div>
@@ -232,14 +181,14 @@ let data = {}, villages = [], editId = null;
 function waitFB(cb) { if (window._fb) cb(); else setTimeout(() => waitFB(cb), 100); }
 waitFB(() => {
   window._fb.onAuthStateChanged(window._fb.auth, user => {
-    document.getElementById('loading-overlay').style.display = 'none';
-    if (user) {
-      document.getElementById('app-shell').style.display='block';
-      document.getElementById('login-screen').style.display='none';
-      listenToData();
+    document.getElementById('loading-overlay').style.display='none';
+    if(user) {
+        document.getElementById('app-shell').style.display='block';
+        document.getElementById('login-screen').style.display='none';
+        listenToData();
     } else {
-      document.getElementById('app-shell').style.display='none';
-      document.getElementById('login-screen').style.display='flex';
+        document.getElementById('app-shell').style.display='none';
+        document.getElementById('login-screen').style.display='flex';
     }
   });
 });
@@ -253,69 +202,90 @@ function doLogout() { window._fb.signOut(window._fb.auth); }
 function listenToData() {
   const {db,ref,onValue} = window._fb;
   onValue(ref(db,'villages'), snap => {
-    villages = snap.exists() ? Object.values(snap.val()) : ['Chak 12','Village A'];
-    const h = villages.map(v=>`<option value="${v}">${v}</option>`).join('');
-    document.getElementById('f-village').innerHTML = h;
-    document.getElementById('card-filter').innerHTML = '<option value="">All Villages</option>' + h;
+    villages = snap.exists() ? Object.values(snap.val()) : [];
+    updateVillageSelects();
   });
   onValue(ref(db,'beneficiaries'), snap => {
     data = snap.exists() ? snap.val() : {};
-    renderDashboard(); renderTable(); renderCards();
+    refreshAll();
   });
 }
 
+function updateVillageSelects() {
+    const h = villages.map(v => `<option value="${v}">${v}</option>`).join('');
+    document.getElementById('f-village').innerHTML = h;
+    document.getElementById('filter-village').innerHTML = '<option value="">All Villages</option>' + h;
+    document.getElementById('print-filter').innerHTML = '<option value="">Select Village</option>' + h;
+    renderVillageList();
+}
+
+function refreshAll() { renderDashboard(); renderTable(); renderCards(); }
+
 function renderDashboard() {
-  const arr = Object.values(data);
-  document.getElementById('stats').innerHTML = `
-    <div style="background:#fff; padding:20px; border-radius:10px; flex:1; border-left:5px solid var(--blue-primary)">
-        <div style="font-size:12px; color:gray">TOTAL FAMILIES</div>
-        <div style="font-size:24px; font-weight:700">${arr.length}</div>
-    </div>
-    <div style="background:#fff; padding:20px; border-radius:10px; flex:1; border-left:5px solid var(--blue-navy)">
-        <div style="font-size:12px; color:gray">VILLAGES</div>
-        <div style="font-size:24px; font-weight:700">${villages.length}</div>
-    </div>`;
+    const arr = Object.values(data);
+    document.getElementById('stats-summary').innerHTML = `
+        <div class="stat-box"><div>Total Families</div><div style="font-size:24px; font-weight:700">${arr.length}</div></div>
+        <div class="stat-box"><div>Zakat</div><div style="font-size:24px; font-weight:700">${arr.filter(x=>x.category==='Zakat').length}</div></div>
+        <div class="stat-box"><div>Sadaqa</div><div style="font-size:24px; font-weight:700">${arr.filter(x=>x.category==='Sadaqa').length}</div></div>`;
+    
+    document.getElementById('dash-village-table').innerHTML = villages.map(v => {
+        const vd = arr.filter(x => x.village === v);
+        return `<tr><td>${v}</td><td>${vd.length}</td><td>${vd.filter(x=>x.category==='Zakat').length}</td><td>${vd.filter(x=>x.category==='Sadaqa').length}</td></tr>`;
+    }).join('');
 }
 
 function renderTable() {
-  const tb = document.getElementById('table-body');
-  tb.innerHTML = Object.entries(data).map(([id, d]) => `
-    <tr>
-      <td style="font-weight:700">${d.cardNo}</td>
-      <td class="urdu-field">${d.name}</td>
-      <td class="urdu-field">${d.father}</td>
-      <td>${d.village}</td>
-      <td>
-        <button class="btn btn-sm" onclick="openEdit('${id}')">Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteRecord('${id}')">Delete</button>
-      </td>
-    </tr>`).join('');
+    const q = document.getElementById('search-input').value.toLowerCase();
+    const fv = document.getElementById('filter-village').value;
+    const items = Object.entries(data).filter(([id, d]) => {
+        const matchesQuery = !q || `${d.name} ${d.cardNo}`.toLowerCase().includes(q);
+        const matchesVillage = !fv || d.village === fv;
+        return matchesQuery && matchesVillage;
+    });
+    document.getElementById('main-table-body').innerHTML = items.map(([id, d]) => `
+        <tr>
+            <td style="font-weight:700">${d.cardNo}</td>
+            <td class="urdu-field">${d.name}</td>
+            <td class="urdu-field">${d.father}</td>
+            <td>${d.village}</td>
+            <td>
+                <button class="btn btn-sm" onclick="openEdit('${id}')">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteRecord('${id}')">Delete</button>
+            </td>
+        </tr>`).join('');
 }
 
 function renderCards() {
-    const filter = document.getElementById('card-filter').value;
-    const arr = Object.values(data).filter(d => !filter || d.village === filter);
-    const pages = []; for(let i=0; i<arr.length; i+=6) pages.push(arr.slice(i,i+6));
-    
+    const v = document.getElementById('print-filter').value;
+    const arr = v ? Object.values(data).filter(d => d.village === v) : [];
+    const pages = []; for(let i=0; i<arr.length; i+=6) pages.push(arr.slice(i, i+6));
     document.getElementById('cards-container').innerHTML = pages.map(p => `
-      <div class="print-grid">${p.map(d => `
-        <div class="bcard">
-          <div class="bcard-head"><h4>UNITY WELFARE SOCIETY</h4><p>Food Distribution Card</p></div>
-          <div class="bcard-body">
-            <div class="bcard-row"><span class="l">Name</span><span class="v urdu-field">${d.name}</span></div>
-            <div class="bcard-row"><span class="l">Father</span><span class="v urdu-field">${d.father}</span></div>
-            <div class="bcard-row"><span class="l">Village</span><span class="v">${d.village}</span></div>
-            <div class="bcard-row"><span class="l">Caste</span><span class="v urdu-field">${d.caste||'—'}</span></div>
-          </div>
-          <div class="bcard-foot"><span class="bcard-no">${d.cardNo}</span><span style="font-size:10px; font-weight:700">${d.category}</span></div>
-        </div>`).join('')}</div>`).join('');
+        <div class="print-grid">${p.map(d => `
+            <div class="bcard">
+                <div class="bcard-head"><h4 style="font-family:Amiri">UNITY WELFARE SOCIETY</h4><p>Food Distribution Card</p></div>
+                <div class="bcard-body">
+                    <div class="bcard-row"><span>NAME</span><span class="urdu-field">${d.name}</span></div>
+                    <div class="bcard-row"><span>FATHER</span><span class="urdu-field">${d.father}</span></div>
+                    <div class="bcard-row"><span>VILLAGE</span><span>${d.village}</span></div>
+                    <div class="bcard-row"><span>CASTE</span><span class="urdu-field">${d.caste||'—'}</span></div>
+                </div>
+                <div class="bcard-foot"><span style="font-family:Amiri; font-weight:700">${d.cardNo}</span><span>${d.category}</span></div>
+            </div>`).join('')}</div>`).join('');
+}
+
+function renderVillageList() {
+    document.getElementById('village-list').innerHTML = villages.map(v => `
+        <div style="background:var(--blue-light); padding:10px 15px; border-radius:20px; display:flex; gap:10px; align-items:center">
+            <span>${v}</span><button onclick="removeVillage('${v}')" style="border:none; background:none; cursor:pointer; color:red">✕</button>
+        </div>`).join('');
 }
 
 function switchTab(t) {
-  document.querySelectorAll('.tab-section').forEach(s=>s.style.display='none');
-  document.getElementById('tab-'+t).style.display='block';
-  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
-  document.getElementById('page-title').textContent = t.charAt(0).toUpperCase() + t.slice(1);
+    document.querySelectorAll('.tab-section').forEach(s => s.style.display='none');
+    document.getElementById('tab-'+t).style.display='block';
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    document.getElementById('page-title').textContent = t.charAt(0).toUpperCase() + t.slice(1);
 }
 
 function openAdd() { editId = null; document.getElementById('modal').classList.add('open'); }
@@ -341,13 +311,22 @@ function saveRecord() {
         category: document.getElementById('f-category').value
     };
     const {db,ref,push,update} = window._fb;
-    (editId ? update(ref(db,'beneficiaries/'+editId), rec) : push(ref(db,'beneficiaries'), rec))
-    .then(() => closeModal());
+    (editId ? update(ref(db, 'beneficiaries/'+editId), rec) : push(ref(db, 'beneficiaries'), rec)).then(() => closeModal());
 }
 
-function deleteRecord(id) {
-    if(confirm('Are you sure you want to delete this beneficiary?')) {
-        window._fb.remove(window._fb.ref(window._fb.db, 'beneficiaries/'+id));
+function deleteRecord(id) { if(confirm('Delete this beneficiary?')) window._fb.remove(window._fb.ref(window._fb.db, 'beneficiaries/'+id)); }
+
+function addVillage() {
+    const v = prompt('Enter Village Name:');
+    if(v) {
+        const newList = [...villages, v];
+        window._fb.set(window._fb.ref(window._fb.db, 'villages'), Object.fromEntries(newList.map((x,i)=>[i,x])));
+    }
+}
+function removeVillage(v) {
+    if(confirm('Remove this village?')) {
+        const newList = villages.filter(x => x !== v);
+        window._fb.set(window._fb.ref(window._fb.db, 'villages'), Object.fromEntries(newList.map((x,i)=>[i,x])));
     }
 }
 </script>
